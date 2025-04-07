@@ -1,0 +1,16 @@
+log_dir: logs/hotpotqa/atomic_decompose
+result_path: logs/hotpotqa/atomic_decompose/atomic_decompose.jsonl
+output_path: logs/hotpotqa/atomic_decompose/atomic_decompose_updated.jsonl
+
+test_rounds: 3
+num_test_data: 500
+
+# Evaluator Setting
+################################################################################
+evaluator:
+  metrics:
+    - ExactMatch
+    - F1
+    - Precision
+    - Recall
+    - LLM

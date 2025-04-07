@@ -1,0 +1,124 @@
+# Environment Variable Setting
+################################################################################
+dotenv_path: null
+
+
+# Logging Setting
+################################################################################
+log_root_dir: logs/hotpotqa
+
+# experiment_name: would be used to create log_dir = log_root_dir/experiment_name/
+experiment_name: atomic_decompose
+
+# test_jsonl_filename: would be used to create test_jsonl_path = log_dir/test_jsonl_filename;
+#   if set to null, the experiment_name would be used
+test_jsonl_filename: null
+
+# Number of rounds you want to test. min, max, avg. accuracy will be reported if multiple rounds.
+test_rounds: 1
+
+
+# Workflow Setting
+################################################################################
+workflow:
+  module_path: pikerag.workflows.qa_decompose
+  class_name: QaDecompositionWorkflow
+  args:
+    max_num_question: 5
+    question_similarity_threshold: 0.999
+
+
+# Testing Suite Setting
+################################################################################
+test_loading:
+  module: pikerag.utils.data_protocol_utils
+  name: load_testing_suite
+  args:
+    filepath: data/hotpotqa/dev_500.jsonl
+
+
+# Prompt Setting
+################################################################################
+decompose_proposal_protocol:
+  module_path: pikerag.prompts.decomposition
+  protocol_name: question_decompose_protocol
+
+selection_protocol:
+  module_path: pikerag.prompts.decomposition
+  protocol_name: atom_question_selection_protocol
+
+backup_selection_protocol:
+  module_path: pikerag.prompts.decomposition
+  protocol_name: chunk_selection_protocol
+
+original_question_answering_protocol:
+  module_path: pikerag.prompts.decomposition
+  protocol_name: final_qa_protocol
+
+
+# LLM Setting
+################################################################################
+llm_client:
+  module_path: pikerag.llm_client
+  # available class_name: AzureMetaLlamaClient, AzureOpenAIClient, HFMetaLlamaClient
+  class_name: AzureOpenAIClient
+  args: {}
+
+  llm_config:
+    model: gpt-4
+    temperature: 0
+
+  cache_config:
+    # location_prefix: will be joined with log_dir to generate the full path;
+    #   if set to null, the experiment_name would be used
+    location_prefix: null
+    auto_dump: True
+
+
+# Retriever Setting
+################################################################################
+retriever:
+  module_path: pikerag.knowledge_retrievers
+  class_name: ChunkAtomRetriever
+  args:
+    # can be null, default to 4
+    retrieve_k: 8
+    # can be null, default to 0.2
+    retrieve_score_threshold: 0.5
+
+    atom_retrieve_k: 4
+
+    vector_store:
+      # can be null, default to retriever name
+      collection_name: dev_500_atomic_decompose_ada
+      persist_directory: data/vector_stores/hotpotqa
+
+      id_document_loading:
+        module_path: pikerag.utils.data_protocol_utils
+        func_name: load_ids_and_chunks
+        args:
+          filepath: data/hotpotqa/dev_500_retrieval_contexts_as_chunks_with_atom_questions.jsonl
+          atom_tag: atom_questions
+
+      id_atom_loading:
+        module_path: pikerag.utils.data_protocol_utils
+        func_name: load_ids_and_atoms
+        args:
+          filepath: data/hotpotqa/dev_500_retrieval_contexts_as_chunks_with_atom_questions.jsonl
+          atom_tag: atom_questions
+
+      embedding_setting:
+        module_path: pikerag.llm_client.azure_open_ai_client
+        class_name: AzureOpenAIEmbedding
+        args: {}
+
+
+# Evaluator Setting
+################################################################################
+evaluator:
+  metrics:
+    - ExactMatch
+    - F1
+    - Precision
+    - Recall
+    - LLM

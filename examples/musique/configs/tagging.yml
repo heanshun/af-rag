@@ -1,0 +1,54 @@
+# Environment Variable Setting
+################################################################################
+dotenv_path: null
+
+
+# Logging Setting
+################################################################################
+log_root_dir: logs/atom_tagging
+
+# experiment_name: would be used to create log_dir = log_root_dir/experiment_name/
+experiment_name: musique_dev_500
+
+
+# Document Loading & Saving
+# ################################################################################
+ori_doc_loading:
+  module: pikerag.utils.data_protocol_utils
+  name: load_chunks_from_jsonl
+  args:
+    jsonl_chunk_path: data/musique/dev_500_retrieval_contexts_as_chunks.jsonl
+
+tagged_doc_saving:
+  module: pikerag.utils.data_protocol_utils
+  name: save_chunks_to_jsonl
+  args:
+    dump_path: data/musique/dev_500_retrieval_contexts_as_chunks_with_atom_questions.jsonl
+
+
+# Tagger Setting
+################################################################################
+tagger:
+  tagging_protocol:
+    module_path: pikerag.prompts.tagging
+    attr_name: atom_question_tagging_protocol
+
+  tag_name: atom_questions
+
+
+# LLM Setting
+################################################################################
+llm_client:
+  module_path: pikerag.llm_client
+  class_name: AzureOpenAIClient
+  args: {}
+
+  llm_config:
+    model: gpt-4
+    temperature: 0.7
+
+  cache_config:
+    # location_prefix: will be joined with log_dir to generate the full path;
+    #   if set to null, the experiment_name would be used
+    location_prefix: null
+    auto_dump: True

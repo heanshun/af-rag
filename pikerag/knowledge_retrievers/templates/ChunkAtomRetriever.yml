@@ -1,0 +1,41 @@
+retriever:
+  module_path: pikerag.knowledge_retrievers
+  class_name: ChunkAtomRetriever
+  args:
+    # can be null, default to 4
+    retrieve_k: INTEGER_BIGGER_THAN_0
+    # can be null, default to 0.5
+    retrieve_score_threshold: FLOAT_BETWEEN_0_AND_1
+
+    atom_retrieve_k: INTEGER_BIGGER_THAN_0
+
+    # # can be null, default to question as query
+    # retrieval_query:
+    #   module_path: MODULE_PATH
+    #   func_name: FUNC_NAME
+    #   args: {}
+
+    vector_store:
+      # can be null, default to retriever name
+      collection_name: COLLECTION_NAME
+      # can be null, default to log_dir
+      persist_directory: PERSIST_DIRECTORY
+
+      # atom_name: ATOM_NAME
+
+      id_document_loading:
+        module_path: MODULE_PATH
+        func_name: FUNC_NAME
+        args: {}
+
+      id_atom_loading:
+        module_path: MODULE_PATH
+        func_name: FUNC_NAME
+        args:
+          atom_tag: ATOM_TAG
+
+      # can be null, default to SentenceTransformerEmbeddings()
+      embedding_setting:
+        module_path: MODULE_PATH
+        class_name: FUNC_NAME
+        args: {}
