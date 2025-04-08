@@ -79,14 +79,7 @@ def ask():
     try:
         qa = BaseQaData(question=question)
         answer = current_workflow.answer(qa, 0)
-        # 如果answer是字符串格式的JSON，先转换成字典
-        if isinstance(answer, str):
-            try:
-                import json
-                answer = json.loads(answer)
-            except:
-                pass
-        return jsonify({'success': True, 'answer': answer})
+        return jsonify({'success': True, 'answer': str(answer)})
     except Exception as e:
         return jsonify({'success': False, 'message': f'回答失败：{str(e)}'})
 

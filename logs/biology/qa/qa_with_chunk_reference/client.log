@@ -44,3 +44,57 @@ None returned as response
 2025-04-08 13:49:33.791001 create completion...
 [CompanyLLMClient]
 2025-04-08 13:49:55.264843 receive response, time spent: 21.47384238243103 s.
+[CompanyLLMClient]
+2025-04-08 14:35:59.624454 create completion...
+[CompanyLLMClient]
+2025-04-08 14:36:21.224043 receive response, time spent: 21.598589658737183 s.
+[ExternalLLMClient]
+2025-04-08 14:52:44.421121 create completion...
+[ExternalLLMClient]
+2025-04-08 14:52:44.476123 request failed, time spent: 0.05500197410583496 s.
+None returned as response
+  -- Last message: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n- 若因特殊情况未能于9:00前完成打卡，请及时与直接主管沟通说明。\', \'- 非出差情况下使用外勤打卡，需提前向主管报备原因。\', \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'- 扣除直接主管每人次20元。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n1. 值班员工未能在8:00到岗并钉钉打卡，视为迟到。\', \'2. 未出差但打外勤卡的员工，视为迟到。\', \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'- 扣除直接主管每人次20元，作为对团队准时到岗文化的强调与维护。\'], \'parent\': \'\'}\n\n\n# Question\n我迟到了10分钟，会受到什么惩罚？\n\nLet\'s think step by step.'}
+[ExternalLLMClient]
+2025-04-08 14:53:52.872456 create completion...
+[ExternalLLMClient]
+2025-04-08 14:53:52.905644 request failed, time spent: 0.033186912536621094 s.
+None returned as response
+  -- Last message: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n- 若因特殊情况未能于9:00前完成打卡，请及时与直接主管沟通说明。\', \'- 非出差情况下使用外勤打卡，需提前向主管报备原因。\', \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'- 扣除直接主管每人次20元。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n1. 值班员工未能在8:00到岗并钉钉打卡，视为迟到。\', \'2. 未出差但打外勤卡的员工，视为迟到。\', \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'- 扣除直接主管每人次20元，作为对团队准时到岗文化的强调与维护。\'], \'parent\': \'\'}\n\n\n# Question\n我迟到了10分钟，会受到什么惩罚？\n\nLet\'s think step by step.'}
+[ExternalLLMClient]
+2025-04-08 14:53:54.788328 create completion...
+[ExternalLLMClient]
+2025-04-08 14:53:54.848133 request failed, time spent: 0.05980539321899414 s.
+None returned as response
+  -- Last message: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n- 若因特殊情况未能于9:00前完成打卡，请及时与直接主管沟通说明。\', \'- 非出差情况下使用外勤打卡，需提前向主管报备原因。\', \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'- 扣除直接主管每人次20元。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n1. 值班员工未能在8:00到岗并钉钉打卡，视为迟到。\', \'2. 未出差但打外勤卡的员工，视为迟到。\', \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'- 扣除直接主管每人次20元，作为对团队准时到岗文化的强调与维护。\'], \'parent\': \'\'}\n\n\n# Question\n我迟到了10分钟，会受到什么惩罚？\n\nLet\'s think step by step.'}
+[ExternalLLMClient]
+2025-04-08 14:54:04.515715 create completion...
+[ExternalLLMClient]
+2025-04-08 14:54:04.550711 request failed, time spent: 0.03395199775695801 s.
+None returned as response
+  -- Last message: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n- 若因特殊情况未能于9:00前完成打卡，请及时与直接主管沟通说明。\', \'- 非出差情况下使用外勤打卡，需提前向主管报备原因。\', \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'- 扣除直接主管每人次20元。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n1. 值班员工未能在8:00到岗并钉钉打卡，视为迟到。\', \'2. 未出差但打外勤卡的员工，视为迟到。\', \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'- 扣除直接主管每人次20元，作为对团队准时到岗文化的强调与维护。\'], \'parent\': \'\'}\n\n\n# Question\n我迟到了10分钟，会受到什么惩罚？\n\nLet\'s think step by step.'}
+[ExternalLLMClient]
+2025-04-08 14:54:22.536216 create completion...
+[ExternalLLMClient]
+2025-04-08 14:54:22.571874 request failed, time spent: 0.03565788269042969 s.
+None returned as response
+  -- Last message: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n- 若因特殊情况未能于9:00前完成打卡，请及时与直接主管沟通说明。\', \'- 非出差情况下使用外勤打卡，需提前向主管报备原因。\', \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'- 扣除直接主管每人次20元。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n1. 值班员工未能在8:00到岗并钉钉打卡，视为迟到。\', \'2. 未出差但打外勤卡的员工，视为迟到。\', \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'- 扣除直接主管每人次20元，作为对团队准时到岗文化的强调与维护。\'], \'parent\': \'\'}\n\n\n# Question\n我迟到了10分钟，会受到什么惩罚？\n\nLet\'s think step by step.'}
+[CompanyLLMClient]
+2025-04-08 14:54:33.498156 create completion...
+[CompanyLLMClient]
+2025-04-08 14:54:55.034267 receive response, time spent: 21.536110639572144 s.
+[ExternalLLMClient]
+2025-04-08 14:55:51.464269 create completion...
+[ExternalLLMClient]
+2025-04-08 14:55:51.493403 request failed, time spent: 0.029133319854736328 s.
+None returned as response
+  -- Last message: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n- 若因特殊情况未能于9:00前完成打卡，请及时与直接主管沟通说明。\', \'- 非出差情况下使用外勤打卡，需提前向主管报备原因。\', \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'- 扣除直接主管每人次20元。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n1. 值班员工未能在8:00到岗并钉钉打卡，视为迟到。\', \'2. 未出差但打外勤卡的员工，视为迟到。\', \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'- 扣除直接主管每人次20元，作为对团队准时到岗文化的强调与维护。\'], \'parent\': \'\'}\n\n\n# Question\n我迟到了10分钟，会受到什么惩罚？\n\nLet\'s think step by step.'}
+[ExternalLLMClient]
+2025-04-08 14:59:07.374856 create completion...
+[ExternalLLMClient]
+2025-04-08 14:59:07.406707 request failed, time spent: 0.030813217163085938 s.
+None returned as response
+  -- Last message: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n- 若因特殊情况未能于9:00前完成打卡，请及时与直接主管沟通说明。\', \'- 非出差情况下使用外勤打卡，需提前向主管报备原因。\', \'- 为强化准时意识，若发生无故迟到行为：\\n  - 每次迟到扣除本人30元；\', \'- 扣除直接主管每人次20元。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'67b6dae25d06eb7199651709\', \'doc_name\': \'公司考勤管理制度\', \'matched_content\': \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'### 2. 迟到处理\\n1. 值班员工未能在8:00到岗并钉钉打卡，视为迟到。\', \'2. 未出差但打外勤卡的员工，视为迟到。\', \'3. 每次迟到处理方式：\\n   - 扣除本人30元；\', \'- 扣除直接主管每人次20元，作为对团队准时到岗文化的强调与维护。\'], \'parent\': \'\'}\n\n\n# Question\n我迟到了10分钟，会受到什么惩罚？\n\nLet\'s think step by step.'}
+[CompanyLLMClient]
+2025-04-08 14:59:14.542615 create completion...
+[CompanyLLMClient]
+2025-04-08 14:59:36.053474 receive response, time spent: 21.510859489440918 s.
