@@ -14,17 +14,30 @@
 
 我们对原有的PIKE-RAG系统进行了以下改进：
 
-1. [工作流程1]
-2. [工作流程2]
-3. [待补充更多细节]
+系统支持以下三种工作模式：
 
-## 待完善内容
+### 1. 批量测试模式
 
-- 详细的工作流程说明
-- 使用示例
-- 性能评估
-- 部署指南
+通过运行`test_answer.py`，结合`question.txt`中的问题进行批量测试：
 
+```bash
+python -m tests.pikerag.workflows.test_answer tests\pikerag\workflows\qa\mongodb_qa_retriever.yml 0
+```
+### 2. 交互式问答模式
+
+启动交互式问答界面，支持实时对话：
+
+```bash
+python -m tests.pikerag.workflows.test_answer_interactive
+```
+
+### 3. Web应用模式
+
+启动Web界面，提供可视化的问答窗口和配置管理：
+
+```bash
+python -m tests.pikerag.workflows.web_app
+```
 ## 贡献
 
 欢迎提交Issue和Pull Request来帮助改进项目。
