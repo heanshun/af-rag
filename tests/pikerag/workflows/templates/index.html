@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QA系统</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+        select, input, button {
+            padding: 8px;
+            margin: 5px;
+        }
+        #questionInput {
+            width: 80%;
+        }
+        #answer {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .error {
+            color: red;
+        }
+        .loading {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .spinner {
+            display: none;
+            margin-left: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>QA系统</h1>
+    
+    <div class="container">
+        <h2>配置管理</h2>
+        <select id="configSelect">
+            <option value="">请选择配置文件</option>
+            {% for config in config_files %}
+            <option value="{{ config }}">{{ config }}</option>
+            {% endfor %}
+        </select>
+        <button onclick="loadConfig()">加载配置</button>
+        <span id="configStatus"></span>
+    </div>
+
+    <div class="container">
+        <h2>问答系统</h2>
+        <div>
+            <input type="text" id="questionInput" placeholder="请输入您的问题">
+            <button id="askButton" onclick="askQuestion()">提问</button>
+            <span id="spinner" class="spinner">思考中</span>
+        </div>
+        <div id="answer"></div>
+    </div>
+
+    <script>
+        function loadConfig() {
+            const configFile = document.getElementById('configSelect').value;
+            if (!configFile) {
+                alert('请选择配置文件');
+                return;
+            }
+
+            fetch('/load_config', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `config_file=${encodeURIComponent(configFile)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                const status = document.getElementById('configStatus');
+                status.textContent = data.message;
+                status.className = data.success ? '' : 'error';
+            });
+        }
+
+        function setLoading(isLoading) {
+            const askButton = document.getElementById('askButton');
+            const questionInput = document.getElementById('questionInput');
+            const spinner = document.getElementById('spinner');
+            
+            if (isLoading) {
+                askButton.disabled = true;
+                askButton.classList.add('loading');
+                questionInput.disabled = true;
+                spinner.style.display = 'inline';
+            } else {
+                askButton.disabled = false;
+                askButton.classList.remove('loading');
+                questionInput.disabled = false;
+                spinner.style.display = 'none';
+            }
+        }
+
+        function askQuestion() {
+            const question = document.getElementById('questionInput').value.trim();
+            if (!question) {
+                alert('请输入问题');
+                return;
+            }
+
+            // 清空答案框并设置加载状态
+            const answerDiv = document.getElementById('answer');
+            answerDiv.textContent = '';
+            setLoading(true);
+
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `question=${encodeURIComponent(question)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (typeof data.answer === 'object') {
+                        let formattedAnswer = '';
+                        if (data.answer.answer) {
+                            formattedAnswer += `答案：${data.answer.answer}\n\n`;
+                        }
+                        if (data.answer.rationale) {
+                            formattedAnswer += `推理过程：${data.answer.rationale}`;
+                        }
+                        answerDiv.textContent = formattedAnswer || JSON.stringify(data.answer, null, 2);
+                    } else {
+                        answerDiv.textContent = data.answer;
+                    }
+                    answerDiv.className = '';
+                } else {
+                    answerDiv.textContent = data.message;
+                    answerDiv.className = 'error';
+                }
+            })
+            .catch(error => {
+                answerDiv.textContent = '请求出错：' + error.message;
+                answerDiv.className = 'error';
+            })
+            .finally(() => {
+                setLoading(false);  // 恢复按钮状态
+            });
+        }
+
+        // 支持回车键提交问题
+        document.getElementById('questionInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                askQuestion();
+            }
+        });
+    </script>
+</body>
+</html>
