@@ -1,0 +1,11 @@
+{
+    "available_apis": [
+        {
+            "name": "获取用气量数据API",
+            "description": "获取某个时段的用气量数据。",
+            "endpoint": "/api/v1/users/{user_id}",
+            "method": "GET",
+            "parameters": ["user_id"]
+        }
+    ]
+}
