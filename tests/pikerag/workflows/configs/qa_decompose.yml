@@ -68,6 +68,7 @@ llm_client:
   llm_config:
     model: gpt-4
     temperature: 0
+    api_url: "http://192.168.50.67:31467/api/af-liuli/ai/syncChat"
 
   cache_config:
     # location_prefix: will be joined with log_dir to generate the full path;

@@ -4,6 +4,8 @@ import json
 from typing import List
 from pikerag.llm_client.base import BaseLLMClient
 from pikerag.utils.logger import Logger
+import os
+from openai import OpenAI
 import uuid
 
 def get_data_from_response(r):
@@ -15,8 +17,7 @@ def get_data_from_response(r):
         print("Error: Response is not a valid JSON")
         return None
 
-def external_api_call(chat_id, model, prompt, user_message, timeout=100):
-    api_url = 'http://192.168.50.67:31467/api/af-liuli/ai/syncChat'
+def external_api_call(chat_id, model, prompt, user_message, api_url, timeout=100):
     print("请求内容：")
     print(user_message)
     try:
@@ -43,40 +44,54 @@ class ExternalLLMClient(BaseLLMClient):
     def __init__(
         self, location: str = None, auto_dump: bool = True, logger: Logger=None,
         max_attempt: int = 5, exponential_backoff_factor: int = None, unit_wait_time: int = 60, 
-        chat_id: str = "1", model: str = "qwen-turbo", **kwargs,
+        chat_id: str = "1", model: str = "deepseek-r1", **kwargs,
     ) -> None:
         super().__init__(location, auto_dump, logger, max_attempt, exponential_backoff_factor, unit_wait_time, **kwargs)
         self.chat_id = chat_id
         self.model = model
+        self.client = None
+
+    def _init_client(self, api_key, api_url):
+        if not self.client:
+            print(f"初始化OpenAI客户端，API URL: {api_url}")
+            self.client = OpenAI(
+                api_key=api_key,
+                base_url=api_url
+            )
+            print("OpenAI客户端初始化成功")
 
     def _wrap_body(self, messages: List[dict], **llm_config) -> tuple:
-        print("llm_config = ", llm_config)
-        prompt = llm_config.get("prompt", "")
-        user_message = messages[-1]["content"] if messages else ""
+        api_key = llm_config.get("api_key", "")
+        api_url = llm_config.get("api_url", "")
         model = llm_config.get("model", self.model)
-        return (self.chat_id, model, prompt, user_message)
+        print(f"准备API调用，模型: {model}")
+        self._init_client(api_key, api_url)
+        return (messages, model)
 
     def _get_response_with_messages(self, messages: List[dict], **llm_config) -> bytes:
-        chat_id, model, prompt, user_message = self._wrap_body(messages, **llm_config)
-        response = external_api_call(
-            chat_id=chat_id,
-            model=model,
-            prompt=prompt,
-            user_message=user_message
-        )
-        return response
+        messages, model = self._wrap_body(messages, **llm_config)
+        try:
+            print(f"发送消息: {messages}")
+            completion = self.client.chat.completions.create(
+                model=model,
+                messages=[{"role": m["role"], "content": m["content"]} for m in messages]
+            )
+            print(f"API调用成功，返回结果: {completion.choices[0].message.content}")
+            return completion.choices[0].message.content
+        except Exception as e:
+            self.warning(f"API调用失败: {e}")
+            print(f"详细错误信息: {str(e)}")
+            return ""
 
     def _get_content_from_response(self, response: bytes, messages: List[dict] = None) -> str:
         try:
-            content = response
-            if not content:
+            if not response:
                 warning_message = "未返回内容"
                 self.warning(warning_message)
-                self.debug(f"完整响应: {response}")
                 if messages is not None and len(messages) >= 1:
                     self.debug(f"最后的消息: {messages[-1]}")
-                content = ""
+                return ""
+            return response
         except Exception as e:
             self.warning(f"解析响应失败: {e}")
-            content = ""
-        return content
+            return ""

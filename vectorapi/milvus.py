@@ -3,7 +3,7 @@ import time
 from colorama import Fore
 from pymilvus import Milvus, DataType
 
-host = '192.168.50.179'
+host = '127.0.0.1'
 port = '19530'
 
 def create_collection(collection_name, dimension):

@@ -143,3 +143,4 @@ cython_debug/
 .vscode/
 env_configs/
 logs/
+data/

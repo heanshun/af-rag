@@ -4,26 +4,28 @@ services:
     image: mongo:latest
     container_name: mongodb
     restart: always
+    env_file: .env
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: your_password
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
     ports:
       - "27017:27017"
     volumes:
-      - mongodb_data:/data/db
+      - ./data/mongodb:/data/db
 
   # Milvus向量数据库服务
   milvus-standalone:
-    image: milvusdb/milvus:latest
+    image: milvusdb/milvus:v2.3.3
     container_name: milvus-standalone
+    env_file: .env
     environment:
       ETCD_CFG.auto-compaction-mode: revision
       ETCD_CFG.auto-compaction-retention: "1000"
       COMMON_CFG.releaseVersion: 2.3.3
     volumes:
-      - milvus_data:/var/lib/milvus
+      - ./data/milvus:/var/lib/milvus
     ports:
-      - "19530:19530"
+      - "${MILVUS_PORT}:19530"
       - "9091:9091"
     restart: always
 
