@@ -1,7 +1,7 @@
 import time
 
 from colorama import Fore
-from pymilvus import connections, Collection, DataType, FieldSchema, CollectionSchema
+from pymilvus import Milvus, DataType
 
 host = 'localhost'
 port = '19530'
@@ -17,11 +17,7 @@ def create_collection(collection_name, dimension):
     返回：
     - 无
     """
-    client = connections.connect(
-        alias="default", 
-        host=host,
-        port=port
-    )
+    client = Milvus(host=host, port=port)
     collection_name = collection_name
 
     collection_schema = {
@@ -37,11 +33,7 @@ def create_collection(collection_name, dimension):
 
 def delete_collection(collection_name):
     # 创建Milvus客户端实例，连接到服务器
-    milvus_client = connections.connect(
-        alias="default", 
-        host=host,
-        port=port
-    )
+    milvus_client = Milvus(host=host, port=port)
     
     # 检查集合是否存在
     if milvus_client.has_collection(collection_name):
@@ -62,11 +54,7 @@ def insert_data(collection_name, vectors):
     返回值：
     无
     """
-    client = connections.connect(
-        alias="default", 
-        host=host,
-        port=port
-    )
+    client = Milvus(host=host, port=port)
     result = client.insert(collection_name, vectors)
     return result.primary_keys
 
@@ -83,11 +71,7 @@ def search_similar_content(collection_name, query_vector, limit=30, output_field
     """
     start_time = time.time()
     # 连接到Milvus服务器
-    client = connections.connect(
-        alias="default", 
-        host=host,
-        port=port
-    )
+    client = Milvus(host=host, port=port)
     # 首先加载集合到内存
     client.load_collection(collection_name=collection_name)
 
@@ -128,11 +112,7 @@ def create_index(collection_name):
     返回：
     无
     """
-    client = connections.connect(
-        alias="default", 
-        host=host,
-        port=port
-    )
+    client = Milvus(host=host, port=port)
     # 定义索引参数
     index_param = {
         "metric_type": "L2",  # 选择一个适合您数据的距离度量
@@ -154,20 +134,12 @@ def execute_milvus_command(collection_name):
     response (str): 命令执行结果
     """
     # 调用milvus执行命令
-    client = connections.connect(
-        alias="default", 
-        host=host,
-        port=port
-    )
+    client = Milvus(host=host, port=port)
     has_index = client.has_index(collection_name=collection_name, field_name="vector")
     print(has_index)
 
 def list_collections():
-    client = connections.connect(
-        alias="default", 
-        host=host,
-        port=port
-    )
+    client = Milvus(host=host, port=port)
     has_index = client.list_collections()
     return has_index
 
@@ -182,12 +154,9 @@ def delete_data(collection_name, primary_keys):
     返回值：
     无
     """
-    client = connections.connect(
-        alias="default", 
-        host=host,
-        port=port
-    )
+    client = Milvus(host=host, port=port)
     keys_str = ','.join(str(key) for key in primary_keys)  # 将主键列表转换为字符串
     expr = f'id in [{keys_str}]'  # 构建查询表达式
     result = client.delete(collection_name, expr)
     return result
+

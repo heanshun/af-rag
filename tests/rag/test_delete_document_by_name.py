@@ -6,9 +6,7 @@ if __name__ == "__main__":
         "测试文档",
         username="admin",
         password="Class123!",
-        host="192.168.50.67",
-        port=30429,
-        auth_db="admin",
-        db_name="documents"
+        host="localhost",
+        port=27017
     )
     print(f"文档删除{'成功' if delete_success else '失败'}")
