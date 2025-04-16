@@ -133,3 +133,15 @@ API调用失败: Error code: 404
 2025-04-10 15:16:21.932434 create completion...
 [ExternalLLMClient]
 2025-04-10 15:16:30.997832 receive response, time spent: 9.048356533050537 s.
+[CompanyLLMClient]
+2025-04-16 14:05:15.153446 create completion...
+[CompanyLLMClient]
+2025-04-16 14:05:42.536265 receive response, time spent: 27.380731105804443 s.
+[CompanyLLMClient]
+2025-04-16 14:35:39.900702 create completion...
+[CompanyLLMClient]
+2025-04-16 14:36:07.350223 receive response, time spent: 27.449342966079712 s.
+[ExternalLLMClient]
+2025-04-16 14:50:29.936010 create completion...
+[ExternalLLMClient]
+2025-04-16 14:50:59.173232 receive response, time spent: 29.237016201019287 s.

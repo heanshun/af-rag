@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, jsonify, request
+from flask_cors import CORS  
 import os
 import yaml
 from pikerag.workflows.qa import QaWorkflow
@@ -8,6 +9,8 @@ import importlib
 import shutil
 
 app = Flask(__name__)
+# 启用CORS，允许跨域请求
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # 全局变量存储当前workflow实例
 current_workflow = None
@@ -49,37 +52,110 @@ def load_workflow(config_path: str):
     current_workflow = workflow_class(yaml_config)
     return True
 
-@app.route('/')
-def index():
-    # 获取配置文件列表
+@app.route('/api/configs', methods=['GET'])
+def get_configs():
+    """获取所有配置文件列表"""
     config_dir = os.path.join(os.path.dirname(__file__), 'configs')
+    if not os.path.exists(config_dir):
+        os.makedirs(config_dir)
     config_files = [f for f in os.listdir(config_dir) if f.endswith('.yml')]
-    return render_template('index.html', config_files=config_files)
+    return jsonify({
+        'success': True,
+        'data': config_files
+    })
 
-@app.route('/load_config', methods=['POST'])
+@app.route('/api/config/check', methods=['POST'])
+def check_config_exists():
+    """检查配置文件是否存在"""
+    filename = request.json.get('filename')
+    if not filename:
+        return jsonify({'success': False, 'message': '未提供文件名'})
+    
+    config_path = os.path.join(os.path.dirname(__file__), 'configs', filename)
+    exists = os.path.exists(config_path)
+    return jsonify({'success': True, 'exists': exists})
+
+@app.route('/api/config/upload', methods=['POST'])
+def upload_config():
+    """上传配置文件"""
+    if 'file' not in request.files:
+        return jsonify({'success': False, 'message': '没有上传文件'})
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'success': False, 'message': '未选择文件'})
+    
+    if not file.filename.endswith('.yml'):
+        return jsonify({'success': False, 'message': '只支持.yml格式的配置文件'})
+    
+    config_dir = os.path.join(os.path.dirname(__file__), 'configs')
+    if not os.path.exists(config_dir):
+        os.makedirs(config_dir)
+    
+    try:
+        file_path = os.path.join(config_dir, file.filename)
+        force_override = request.form.get('force_override', 'false').lower() == 'true'
+        
+        if os.path.exists(file_path) and not force_override:
+            return jsonify({
+                'success': False,
+                'message': 'file_exists',
+                'filename': file.filename
+            })
+        
+        file.save(file_path)
+        return jsonify({'success': True, 'message': f'配置文件上传成功：{file.filename}'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'配置文件上传失败：{str(e)}'})
+
+@app.route('/api/config/delete', methods=['DELETE'])
+def delete_config():
+    """删除配置文件"""
+    filename = request.json.get('filename')
+    if not filename:
+        return jsonify({'success': False, 'message': '未指定要删除的配置文件'})
+    
+    config_path = os.path.join(os.path.dirname(__file__), 'configs', filename)
+    if not os.path.exists(config_path):
+        return jsonify({'success': False, 'message': f'配置文件不存在：{filename}'})
+    
+    try:
+        os.remove(config_path)
+        return jsonify({'success': True, 'message': f'配置文件删除成功：{filename}'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'配置文件删除失败：{str(e)}'})
+
+@app.route('/api/config/load', methods=['POST'])
 def load_config():
-    config_file = request.form.get('config_file')
-    config_path = os.path.join(os.path.dirname(__file__), 'configs', config_file)
+    """加载配置文件"""
+    filename = request.json.get('filename')
+    if not filename:
+        return jsonify({'success': False, 'message': '未指定配置文件'})
+    
+    config_path = os.path.join(os.path.dirname(__file__), 'configs', filename)
+    if not os.path.exists(config_path):
+        return jsonify({'success': False, 'message': f'配置文件不存在：{filename}'})
     
     try:
         load_workflow(config_path)
-        return jsonify({'success': True, 'message': f'成功加载配置：{config_file}'})
+        return jsonify({'success': True, 'message': f'成功加载配置：{filename}'})
     except Exception as e:
         return jsonify({'success': False, 'message': f'加载配置失败：{str(e)}'})
 
-@app.route('/ask', methods=['POST'])
+@app.route('/api/qa/ask', methods=['POST'])
 def ask():
+    """提问接口"""
     if current_workflow is None:
         return jsonify({'success': False, 'message': '请先加载配置文件'})
     
-    question = request.form.get('question', '').strip()
+    question = request.json.get('question', '').strip()
     if not question:
         return jsonify({'success': False, 'message': '问题不能为空'})
     
     try:
         qa = BaseQaData(question=question)
         answer = current_workflow.answer(qa, 0)
-        return jsonify({'success': True, 'answer': str(answer)})
+        return jsonify({'success': True, 'data': str(answer)})
     except Exception as e:
         return jsonify({'success': False, 'message': f'回答失败：{str(e)}'})
 

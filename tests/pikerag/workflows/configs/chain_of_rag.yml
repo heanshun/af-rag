@@ -31,24 +31,26 @@ test_loading:
     path: cais/mmlu
     name: college_biology
 
-# LLM客户端配置
+# LLM Setting
+################################################################################
 llm_client:
   module_path: pikerag.llm_client
   # available class_name: AzureMetaLlamaClient, AzureOpenAIClient, HFMetaLlamaClient
-  class_name: CompanyLLMClient
-  #class_name: ExternalLLMClient
+  # class_name: CompanyLLMClient
+  class_name: ExternalLLMClient
   args: {}
 
   llm_config:
-    model: qwen-turbo
-    #model: deepseek-r1
-    temperature: 0
+    api_key: "sk-062f03efe4df47298433b72464c190ce"  # 请替换为您的API Key
+    api_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    model: "deepseek-r1"  # 可选模型：deepseek-r1, qwen-turbo等
 
   cache_config:
     # location_prefix: will be joined with log_dir to generate the full path;
     #   if set to null, the experiment_name would be used
     location_prefix: null
     auto_dump: True
+
 
 
 # 检索器配置

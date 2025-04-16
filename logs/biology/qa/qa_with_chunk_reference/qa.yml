@@ -52,19 +52,14 @@ qa_protocol:
 llm_client:
   module_path: pikerag.llm_client
   # available class_name: AzureMetaLlamaClient, AzureOpenAIClient, HFMetaLlamaClient
-  class_name: CompanyLLMClient
-  # class_name: ExternalLLMClient
+  # class_name: CompanyLLMClient
+  class_name: ExternalLLMClient
   args: {}
 
   llm_config:
-    # available model name for AzureOpenAIClient: gpt-4, gpt-35-turbo
-    # available model name for AzureMetaLlamaClient: llama-2-7b-chat-22, llama-2-13b-chat-19, llama-2-70b-chat-19,
-    #                                                meta-llama-3-8b-instruct-4, meta-llama-3-70b-instruct-4
-    # available model name for HuggingFaceMetaLlamaClient: meta-llama/Meta-Llama-3-8B-Instruct, meta-llama/Meta-Llama-3-70B-Instruct
-    model: gpt-4
-    temperature: 0
-    # enable max_new_tokens when using llama model through gcr, response seems truncated without it
-    # max_new_tokens: 1024
+    api_key: "sk-062f03efe4df47298433b72464c190ce"  # 请替换为您的API Key
+    api_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    model: "deepseek-r1"  # 可选模型：deepseek-r1, qwen-turbo等
 
   cache_config:
     # location_prefix: will be joined with log_dir to generate the full path;

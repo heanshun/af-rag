@@ -40,6 +40,22 @@
             margin-left: 10px;
             color: #666;
         }
+        .config-actions {
+            margin-bottom: 15px;
+        }
+        .config-list {
+            margin-top: 10px;
+        }
+        .delete-btn {
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
     </style>
 </head>
 <body>
@@ -47,14 +63,23 @@
     
     <div class="container">
         <h2>配置管理</h2>
-        <select id="configSelect">
-            <option value="">请选择配置文件</option>
-            {% for config in config_files %}
-            <option value="{{ config }}">{{ config }}</option>
-            {% endfor %}
-        </select>
-        <button onclick="loadConfig()">加载配置</button>
-        <span id="configStatus"></span>
+        <div class="config-actions">
+            <form id="uploadForm" enctype="multipart/form-data" style="display: inline-block;">
+                <input type="file" id="configFile" name="config_file" accept=".yml">
+                <button type="button" onclick="uploadConfig()">上传配置</button>
+            </form>
+        </div>
+        <div class="config-list">
+            <select id="configSelect">
+                <option value="">请选择配置文件</option>
+                {% for config in config_files %}
+                <option value="{{ config }}">{{ config }}</option>
+                {% endfor %}
+            </select>
+            <button onclick="loadConfig()">加载配置</button>
+            <button onclick="deleteConfig()" class="delete-btn">删除配置</button>
+            <span id="configStatus"></span>
+        </div>
     </div>
 
     <div class="container">
@@ -163,6 +188,108 @@
                 askQuestion();
             }
         });
+
+        function uploadConfig() {
+            const fileInput = document.getElementById('configFile');
+            if (!fileInput.files.length) {
+                alert('请选择配置文件');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('config_file', fileInput.files[0]);
+
+            // 先检查文件是否存在
+            const checkFormData = new FormData();
+            checkFormData.append('filename', fileInput.files[0].name);
+
+            fetch('/check_config_exists', {
+                method: 'POST',
+                body: checkFormData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.exists) {
+                    // 如果文件存在，询问用户是否替换
+                    if (confirm(`配置文件 "${fileInput.files[0].name}" 已存在，是否替换？`)) {
+                        formData.append('force_override', 'true');
+                        performUpload(formData);
+                    }
+                } else {
+                    performUpload(formData);
+                }
+            })
+            .catch(error => {
+                const status = document.getElementById('configStatus');
+                status.textContent = '检查文件失败：' + error.message;
+                status.className = 'error';
+            });
+        }
+
+        function performUpload(formData) {
+            fetch('/upload_config', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const status = document.getElementById('configStatus');
+                if (data.message === 'file_exists') {
+                    // 不应该到达这里，因为我们已经在前面处理了文件存在的情况
+                    status.textContent = `配置文件 "${data.filename}" 已存在`;
+                    status.className = 'error';
+                } else {
+                    status.textContent = data.message;
+                    status.className = data.success ? '' : 'error';
+                    if (data.success) {
+                        // 刷新页面以更新配置文件列表
+                        location.reload();
+                    }
+                }
+            })
+            .catch(error => {
+                const status = document.getElementById('configStatus');
+                status.textContent = '上传失败：' + error.message;
+                status.className = 'error';
+            });
+        }
+
+        function deleteConfig() {
+            const configSelect = document.getElementById('configSelect');
+            const configFile = configSelect.value;
+            
+            if (!configFile) {
+                alert('请选择要删除的配置文件');
+                return;
+            }
+
+            if (!confirm(`确定要删除配置文件 "${configFile}" 吗？`)) {
+                return;
+            }
+
+            fetch('/delete_config', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `config_file=${encodeURIComponent(configFile)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                const status = document.getElementById('configStatus');
+                status.textContent = data.message;
+                status.className = data.success ? '' : 'error';
+                if (data.success) {
+                    // 刷新页面以更新配置文件列表
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                const status = document.getElementById('configStatus');
+                status.textContent = '删除失败：' + error.message;
+                status.className = 'error';
+            });
+        }
     </script>
 </body>
 </html>

@@ -33,3 +33,5 @@ uvicorn
 pydantic-settings
 colorama
 datasets
+flask-cors
+pyyaml

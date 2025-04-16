@@ -59,15 +59,16 @@ llm_client:
   args: {}
 
   llm_config:
-    #model: qwen-turbo
-    model: deepseek-r1
-    temperature: 0
+    api_key: "sk-062f03efe4df47298433b72464c190ce"  # 请替换为您的API Key
+    api_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    model: "deepseek-r1"  # 可选模型：deepseek-r1, qwen-turbo等
 
   cache_config:
     # location_prefix: will be joined with log_dir to generate the full path;
     #   if set to null, the experiment_name would be used
     location_prefix: null
     auto_dump: True
+
 
 
 # Retriever Setting
