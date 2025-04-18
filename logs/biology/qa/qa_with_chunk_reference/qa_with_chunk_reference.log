@@ -3,20 +3,28 @@ Initialized MongoDB connection with URI: mongodb://admin:Class123!@localhost:270
 [Evaluator ]
 Evaluator initialized with ['ExactMatch'].
 [QaMongoDBRetriever]
-Starting content retrieval for query: 上班迟到怎么办
+Starting content retrieval for query: 何安顺和郑筱晓哪个大
 [QaMongoDBRetriever]
-Vector search returned 1 results: [[457426448533184533, 0.45416224002838135, "上班迟到一次扣50元"]]
+Vector search returned 2 results: [[457426448533184730, 0.7504613399505615, "何安顺24岁"], [457426448533184722, 0.7844074964523315, "郑筱晓23岁"]]
 [QaMongoDBRetriever]
 Created new MongoDB client connection
 [QaMongoDBRetriever]
-Processing vector_id: 457426448533184533, distance: 0.45416224002838135, content: 上班迟到一次扣50元
+Processing vector_id: 457426448533184730, distance: 0.7504613399505615, content: 何安顺24岁
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6801fa75a8987789b380bb2a, doc_id: 6801fa74a8987789b380bb27
+Retrieved 1 siblings for parent_id: 680202f72537a4668cc1836d, doc_id: 680202f72537a4668cc1836a
 [QaMongoDBRetriever]
-Retrieved node content for node_id: 6801fa75a8987789b380bb2a
+Retrieved node content for node_id: 680202f72537a4668cc1836d
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 6801fa74a8987789b380bb27
+Retrieved document info for doc_id: 680202f72537a4668cc1836a
 [QaMongoDBRetriever]
-Successfully retrieved 1 documents for query
+Processing vector_id: 457426448533184722, distance: 0.7844074964523315, content: 郑筱晓23岁
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 680202f22537a4668cc18365, doc_id: 680202f22537a4668cc18362
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 680202f22537a4668cc18365
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 680202f22537a4668cc18362
+[QaMongoDBRetriever]
+Successfully retrieved 2 documents for query
 [QaMongoDBRetriever]
 Closed MongoDB client connection

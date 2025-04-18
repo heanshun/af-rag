@@ -222,6 +222,27 @@ def upload_document():
         return jsonify({'success': False, 'message': '未选择文件'})
     
     try:
+        # 修改为绝对路径，并打印出来以便调试
+        retrieved_files_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'retrieved_files')
+        print(f"Trying to save file to: {retrieved_files_dir}")
+        
+        if not os.path.exists(retrieved_files_dir):
+            os.makedirs(retrieved_files_dir)
+            print(f"Created directory: {retrieved_files_dir}")
+            
+        # 保存文件到本地
+        file_path = os.path.join(retrieved_files_dir, doc_name)
+        print(f"Saving file to: {file_path}")
+        
+        file.save(file_path)
+        
+        # 验证文件是否成功保存
+        if os.path.exists(file_path):
+            print(f"File exists after save: {file_path}")
+            print(f"File size: {os.path.getsize(file_path)} bytes")
+        else:
+            print(f"WARNING: File does not exist after save: {file_path}")
+        
         # 检查文档是否已存在
         from pymongo import MongoClient
         client = MongoClient(host="localhost", port=27017, 
@@ -234,7 +255,7 @@ def upload_document():
                 'success': False,
                 'message': 'document_exists',
                 'name': doc_name,
-                'needConfirm': True  # 添加标志，表明需要用户确认
+                'needConfirm': True
             })
         
         # 如果文档存在且用户确认替换，先删除旧文档
@@ -247,13 +268,20 @@ def upload_document():
                 host="localhost",
                 port=27017
             )
+            # 删除本地文件（如果存在）
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        
+        # 重新打开文件以读取内容
+        with open(file_path, 'rb') as f:
+            file_content = f.read()
         
         # 根据文件扩展名处理文件
         file_extension = file.filename.split('.')[-1].lower()
         
         if file_extension == 'json':
             # API JSON文件处理
-            content = file.read().decode('utf-8')
+            content = file_content.decode('utf-8')
             root = process_api_json(content)
         else:
             # 其他格式文件处理
@@ -263,11 +291,14 @@ def upload_document():
             
             if file_extension == 'md':
                 # Markdown文件直接处理
-                content = file.read().decode('utf-8')
+                content = file_content.decode('utf-8')
                 root = split_document(content)
             else:
                 # 其他格式先转换为markdown
-                content = convert_to_markdown(file, file_extension)
+                from io import BytesIO
+                file_obj = BytesIO(file_content)
+                file_obj.filename = file.filename
+                content = convert_to_markdown(file_obj, file_extension)
                 root = split_document(content)
         
         # 保存到MongoDB
@@ -281,6 +312,13 @@ def upload_document():
             host="localhost",
             port=27017
         )
+        
+        # 在处理完成后再次检查文件
+        if os.path.exists(file_path):
+            print(f"File still exists after processing: {file_path}")
+            print(f"Final file size: {os.path.getsize(file_path)} bytes")
+        else:
+            print(f"WARNING: File was deleted during processing: {file_path}")
         
         return jsonify({
             'success': True,
@@ -302,6 +340,7 @@ def delete_document():
         return jsonify({'success': False, 'message': '未指定要删除的文档'})
     
     try:
+        # 删除MongoDB中的文档
         success = delete_document_by_name(
             doc_name,
             vector_space="rag_collection",
@@ -310,6 +349,11 @@ def delete_document():
             host="localhost",
             port=27017
         )
+        
+        # 删除本地文件
+        file_path = os.path.join(os.path.dirname(__file__), 'retrieved_files', doc_name)
+        if os.path.exists(file_path):
+            os.remove(file_path)
         
         if success:
             return jsonify({
@@ -326,6 +370,58 @@ def delete_document():
         return jsonify({
             'success': False,
             'message': f'文档删除失败：{str(e)}'
+        })
+
+@app.route('/api/documents/content/<path:doc_name>', methods=['GET'])
+def get_document_content(doc_name):
+    """获取文档内容"""
+    try:
+        file_path = os.path.join(os.path.dirname(__file__), 'retrieved_files', doc_name)
+        if not os.path.exists(file_path):
+            return jsonify({
+                'success': False,
+                'message': f'文件不存在：{doc_name}'
+            })
+            
+        # 读取文件内容
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            
+        return jsonify({
+            'success': True,
+            'data': {
+                'name': doc_name,
+                'content': content
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'读取文件失败：{str(e)}'
+        })
+
+@app.route('/api/documents/path/<path:doc_name>', methods=['GET'])
+def get_document_path(doc_name):
+    """获取文档的完整路径"""
+    try:
+        file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'retrieved_files', doc_name)
+        if not os.path.exists(file_path):
+            return jsonify({
+                'success': False,
+                'message': f'文件不存在：{doc_name}'
+            })
+            
+        return jsonify({
+            'success': True,
+            'data': {
+                'name': doc_name,
+                'path': f'file:///{file_path.replace("\\", "/")}'  # 转换为文件协议格式
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'获取文件路径失败：{str(e)}'
         })
 
 if __name__ == '__main__':
