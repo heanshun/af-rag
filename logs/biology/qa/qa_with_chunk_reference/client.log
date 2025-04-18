@@ -145,3 +145,47 @@ API调用失败: Error code: 404
 2025-04-16 14:50:29.936010 create completion...
 [ExternalLLMClient]
 2025-04-16 14:50:59.173232 receive response, time spent: 29.237016201019287 s.
+[ExternalLLMClient]
+2025-04-17 14:46:13.338340 create completion...
+[ExternalLLMClient]
+2025-04-17 14:46:45.423367 receive response, time spent: 32.06136918067932 s.
+[ExternalLLMClient]
+2025-04-17 14:47:21.000172 create completion...
+[ExternalLLMClient]
+2025-04-17 14:48:15.683629 receive response, time spent: 54.682918310165405 s.
+[ExternalLLMClient]
+2025-04-17 14:59:28.724865 create completion...
+[ExternalLLMClient]
+2025-04-17 15:00:00.595251 receive response, time spent: 31.87038540840149 s.
+[ExternalLLMClient]
+2025-04-17 15:10:27.952894 create completion...
+[ExternalLLMClient]
+2025-04-17 15:10:51.273552 receive response, time spent: 23.309420347213745 s.
+[ExternalLLMClient]
+2025-04-17 15:54:28.092006 create completion...
+[ExternalLLMClient]
+2025-04-17 15:54:51.498901 receive response, time spent: 23.40689492225647 s.
+[ExternalLLMClient]
+2025-04-17 16:33:48.446530 create completion...
+[ExternalLLMClient]
+2025-04-17 16:34:15.127746 receive response, time spent: 26.68121576309204 s.
+[ExternalLLMClient]
+2025-04-18 10:35:25.256190 create completion...
+[ExternalLLMClient]
+2025-04-18 10:35:59.274632 receive response, time spent: 34.00629639625549 s.
+[ExternalLLMClient]
+2025-04-18 10:40:05.866929 create completion...
+[ExternalLLMClient]
+2025-04-18 10:40:23.524351 receive response, time spent: 17.657403230667114 s.
+[ExternalLLMClient]
+2025-04-18 11:20:22.423440 create completion...
+[ExternalLLMClient]
+2025-04-18 11:22:03.316230 receive response, time spent: 100.87991380691528 s.
+[ExternalLLMClient]
+2025-04-18 13:38:38.800970 create completion...
+[ExternalLLMClient]
+2025-04-18 13:38:55.266582 receive response, time spent: 16.464985132217407 s.
+[ExternalLLMClient]
+2025-04-18 13:41:23.498955 create completion...
+[ExternalLLMClient]
+2025-04-18 13:41:40.872907 receive response, time spent: 17.37340784072876 s.

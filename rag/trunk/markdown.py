@@ -1,6 +1,10 @@
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import List, Optional, BinaryIO
 import re
+import docx
+import PyPDF2
+import pandas as pd
+import openpyxl
 
 @dataclass
 class DocNode:
@@ -16,6 +20,87 @@ class DocNode:
         """添加子节点"""
         child.parent = self
         self.children.append(child)
+
+def convert_to_markdown(file: BinaryIO, file_type: str) -> str:
+    """
+    将不同格式的文件转换为markdown格式
+    
+    Args:
+        file: 文件对象
+        file_type: 文件类型 ('pdf', 'docx', 'txt', 'xlsx', 'csv')
+    
+    Returns:
+        str: 转换后的markdown文本
+    """
+    if file_type == 'pdf':
+        # 处理PDF文件
+        reader = PyPDF2.PdfReader(file)
+        text_parts = []
+        for page in reader.pages:
+            text = page.extract_text()
+            if text.strip():
+                text_parts.append(text)
+        return "\n\n".join(text_parts)
+    
+    elif file_type == 'docx':
+        # 处理Word文档
+        doc = docx.Document(file)
+        markdown_text = []
+        
+        for para in doc.paragraphs:
+            if para.style.name.startswith('Heading'):
+                # 根据标题级别添加#号
+                level = int(para.style.name[-1])
+                markdown_text.append(f"{'#' * level} {para.text}")
+            else:
+                markdown_text.append(para.text)
+        
+        return "\n\n".join(markdown_text)
+    
+    elif file_type in ['xlsx', 'csv']:
+        # 处理Excel或CSV文件
+        if file_type == 'xlsx':
+            df = pd.read_excel(file)
+        else:
+            df = pd.read_csv(file)
+        
+        # 将表格转换为markdown表格格式
+        markdown_table = df.to_markdown()
+        return f"# 数据表格\n\n{markdown_table}"
+    
+    elif file_type == 'txt':
+        # 处理纯文本文件
+        text = file.read().decode('utf-8')
+        
+        # 添加文档标题
+        filename = getattr(file, 'name', '文档').split('/')[-1].split('\\')[-1]
+        title = filename.rsplit('.', 1)[0]
+        markdown_text = [f"# {title}"]
+        
+        # 处理文本内容
+        paragraphs = []
+        current_paragraph = []
+        
+        # 按行分割
+        for line in text.split('\n'):
+            line = line.strip()
+            if line:  # 非空行
+                current_paragraph.append(line)
+            elif current_paragraph:  # 空行且有累积的段落内容
+                paragraphs.append(' '.join(current_paragraph))
+                current_paragraph = []
+        
+        # 处理最后一个段落
+        if current_paragraph:
+            paragraphs.append(' '.join(current_paragraph))
+        
+        # 将段落添加到markdown文本中
+        markdown_text.extend(paragraphs)
+        
+        return "\n\n".join(markdown_text)
+    
+    else:
+        raise ValueError(f"不支持的文件类型: {file_type}")
 
 def split_document(doc_text: str) -> DocNode:
     """

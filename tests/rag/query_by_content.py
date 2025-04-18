@@ -2,7 +2,7 @@ from rag.trunk.save_mongo import query_document_content
 
 if __name__ == "__main__":
     results = query_document_content(
-        "第二句话",
+        "上班",
         username="admin",
         password="Class123!",
         host="localhost",

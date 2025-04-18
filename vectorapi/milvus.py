@@ -74,6 +74,7 @@ def search_similar_content(collection_name, query_vector, limit=30, output_field
     client = Milvus(host=host, port=port)
     # 首先加载集合到内存
     client.load_collection(collection_name=collection_name)
+    print("正在连接host: ", host, "port: ", port)
 
     # 设置查询参数
     search_params = {
@@ -159,4 +160,3 @@ def delete_data(collection_name, primary_keys):
     expr = f'id in [{keys_str}]'  # 构建查询表达式
     result = client.delete(collection_name, expr)
     return result
-

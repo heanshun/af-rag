@@ -23,7 +23,7 @@ argparse
 firecrawl-py
 langchain_text_splitters
 pdfplumber
-pymilvus
+pymilvus~=2.3.2
 openai
 numpy
 tqdm
@@ -35,3 +35,12 @@ colorama
 datasets
 flask-cors
 pyyaml
+tiktoken
+auto_gpt_plugin_template
+gtts~=2.4.0
+GitPython
+python-docx 
+PyPDF2 
+pandas 
+openpyxl 
+tabulate

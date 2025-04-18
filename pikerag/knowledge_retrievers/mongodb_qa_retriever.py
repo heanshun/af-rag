@@ -10,8 +10,8 @@ from pikerag.knowledge_retrievers.base_qa_retriever import BaseQaRetriever
 from pikerag.utils.config_loader import load_callable
 from pikerag.utils.logger import Logger
 from pikerag.workflows.common import BaseQaData
-from pikerag.knowledge_retrievers.vectorapi.embeddings import get_embeddings_m3
-from pikerag.knowledge_retrievers.vectorapi.milvus import search_similar_content
+from vectorapi.embeddings import get_embeddings_m3
+from vectorapi.milvus import search_similar_content
 
 def get_messages_info(message, collection_name, limit=30, threshold=None, embedding_func=get_embeddings_m3):
     # 获取message的向量表示
@@ -21,17 +21,17 @@ def get_messages_info(message, collection_name, limit=30, threshold=None, embedd
 
     # 处理搜索结果
     for query_res in results:
-        for topk_res in query_res:
+        for hit in query_res:
             # 获取结果的ID和距离
-            entity_id = topk_res['id']
-            distance = topk_res['distance']
+            entity_id = hit.id
+            distance = hit.distance
 
             # 如果设置了阈值，则只返回距离小于阈值的结果
             if threshold is not None and distance >= threshold:
                 continue
 
             # 获取其他字段的值
-            field1_value = topk_res['entity'].get('content')
+            field1_value = hit.entity.get('content')
             result.append((entity_id, distance, field1_value))
 
     return result
@@ -206,7 +206,7 @@ class QaMongoDBRetriever(BaseQaRetriever, MongoDBMixin):
         )
         
         self._main_logger.debug(
-            msg=f"Vector search returned {len(vector_results)} results",
+            msg=f"Vector search returned {len(vector_results)} results: {json.dumps(vector_results, ensure_ascii=False)}",
             tag=self.name
         )
             
@@ -217,14 +217,22 @@ class QaMongoDBRetriever(BaseQaRetriever, MongoDBMixin):
 
             for vector_result in vector_results:
                 vector_id = vector_result[0]
+                distance = vector_result[1]
+                content = vector_result[2]
+                
+                self._main_logger.debug(
+                    msg=f"Processing vector_id: {vector_id}, distance: {distance}, content: {content}",
+                    tag=self.name
+                )
+                
                 node = db.document_nodes.find_one({"vector_id": vector_id})
                 if not node:
                     self._main_logger.warning(
-                        msg=f"Node not found for vector_id: {vector_id}",
+                        msg=f"Node not found for vector_id: {vector_id}, content from vector store: {content}",
                         tag=self.name
                     )
-                    continue 
-                    
+                    continue
+                
                 if node["parent_id"] and node["parent_id"] in seen_parent_ids:
                     self._main_logger.debug(
                         msg=f"Skipping duplicate parent_id: {node['parent_id']}",

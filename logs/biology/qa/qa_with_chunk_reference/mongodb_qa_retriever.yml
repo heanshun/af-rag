@@ -75,8 +75,8 @@ retriever:
   class_name: QaMongoDBRetriever
   args:
     mongodb_setting:
-      host: "192.168.50.67"
-      port: 30429
+      host: "localhost"
+      port: 27017
       username: "admin"
       password: "Class123!"
       db_name: "documents"
