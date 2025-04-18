@@ -3,19 +3,19 @@ Initialized MongoDB connection with URI: mongodb://admin:Class123!@localhost:270
 [Evaluator ]
 Evaluator initialized with ['ExactMatch'].
 [QaMongoDBRetriever]
-Starting content retrieval for query: 我迟到了10分钟，会受到什么惩罚？
+Starting content retrieval for query: 上班迟到怎么办
 [QaMongoDBRetriever]
-Vector search returned 1 results: [[457407555460666331, 0.5046002268791199, "上班迟到一次扣50元"]]
+Vector search returned 1 results: [[457426448533184533, 0.45416224002838135, "上班迟到一次扣50元"]]
 [QaMongoDBRetriever]
 Created new MongoDB client connection
 [QaMongoDBRetriever]
-Processing vector_id: 457407555460666331, distance: 0.5046002268791199, content: 上班迟到一次扣50元
+Processing vector_id: 457426448533184533, distance: 0.45416224002838135, content: 上班迟到一次扣50元
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6800b900b1db51db544dec5f, doc_id: 6800b900b1db51db544dec5c
+Retrieved 1 siblings for parent_id: 6801fa75a8987789b380bb2a, doc_id: 6801fa74a8987789b380bb27
 [QaMongoDBRetriever]
-Retrieved node content for node_id: 6800b900b1db51db544dec5f
+Retrieved node content for node_id: 6801fa75a8987789b380bb2a
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 6800b900b1db51db544dec5c
+Retrieved document info for doc_id: 6801fa74a8987789b380bb27
 [QaMongoDBRetriever]
 Successfully retrieved 1 documents for query
 [QaMongoDBRetriever]

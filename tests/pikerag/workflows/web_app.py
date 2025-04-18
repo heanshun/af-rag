@@ -157,8 +157,34 @@ def ask():
     
     try:
         qa = BaseQaData(question=question)
-        answer = current_workflow.answer(qa, 0)
-        return jsonify({'success': True, 'data': str(answer)})
+        result = current_workflow.answer(qa, 0)
+        
+        # 解析回答内容
+        answer = result.get('answer', '')
+        rationale = result.get('rationale', '')
+        
+        # 处理参考来源
+        reference_chunks = result.get('reference_chunks', [])
+        references = []
+        if reference_chunks:
+            for chunk in reference_chunks:
+                try:
+                    # 尝试从字符串中提取文档名称
+                    import ast
+                    chunk_dict = ast.literal_eval(chunk)
+                    doc_name = chunk_dict.get('doc_name', '')
+                    if doc_name:
+                        references.append(doc_name)
+                except:
+                    continue
+        
+        response_data = {
+            'answer': answer,
+            'rationale': rationale,
+            'references': references if references else ['无']
+        }
+        
+        return jsonify({'success': True, 'data': response_data})
     except Exception as e:
         return jsonify({'success': False, 'message': f'回答失败：{str(e)}'})
 
