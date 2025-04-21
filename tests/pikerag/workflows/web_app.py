@@ -196,7 +196,7 @@ def chat():
                 try:
                     chunk_dict = ast.literal_eval(chunk)
                     doc_name = chunk_dict.get('doc_name', '')
-                    if doc_name:
+                    if doc_name and doc_name not in references:  # 添加去重判断
                         references.append(doc_name)
                 except:
                     continue
@@ -419,29 +419,50 @@ def delete_document():
 def get_document_content(doc_name):
     """获取文档内容"""
     try:
+        # 构建完整的文件路径
         file_path = os.path.join(os.path.dirname(__file__), 'retrieved_files', doc_name)
-        if not os.path.exists(file_path):
-            return jsonify({
-                'success': False,
-                'message': f'文件不存在：{doc_name}'
-            })
+        
+        # 获取文件类型
+        file_type = doc_name.split('.')[-1].lower()
+        
+        if file_type == 'txt':
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return f.read()
+                
+        elif file_type == 'pdf':
+            import pdfplumber
+            content = []
+            with pdfplumber.open(file_path) as pdf:
+                for page in pdf.pages:
+                    content.append(page.extract_text())
+            return '\n'.join(content)
             
-        # 读取文件内容
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
+        elif file_type == 'docx':
+            from docx import Document
+            doc = Document(file_path)
+            return '\n'.join([paragraph.text for paragraph in doc.paragraphs])
             
-        return jsonify({
-            'success': True,
-            'data': {
-                'name': doc_name,
-                'content': content
-            }
-        })
+        elif file_type == 'xlsx':
+            import pandas as pd
+            df = pd.read_excel(file_path)
+            return df.to_string()
+            
+        elif file_type in ['html', 'htm']:
+            from bs4 import BeautifulSoup
+            with open(file_path, 'r', encoding='utf-8') as f:
+                soup = BeautifulSoup(f.read(), 'html.parser')
+                return soup.get_text()
+                
+        elif file_type == 'md':
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return f.read()
+                
+        else:
+            raise ValueError(f"不支持的文件类型: {file_type}")
+            
     except Exception as e:
-        return jsonify({
-            'success': False,
-            'message': f'读取文件失败：{str(e)}'
-        })
+        print(f"处理文件 {doc_name} 时发生错误: {str(e)}")
+        return ""
 
 @app.route('/api/documents/path/<path:doc_name>', methods=['GET'])
 def get_document_path(doc_name):
