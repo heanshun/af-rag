@@ -271,3 +271,59 @@ API调用失败: Error code: 404
 2025-04-21 14:44:50.978903 create completion...
 [ExternalLLMClient]
 2025-04-21 14:45:28.059373 receive response, time spent: 37.08047008514404 s.
+[ExternalLLMClient]
+2025-04-21 14:48:13.876162 create completion...
+[ExternalLLMClient]
+2025-04-21 14:48:23.089871 receive response, time spent: 9.213708639144897 s.
+[ExternalLLMClient]
+2025-04-21 15:11:23.749731 create completion...
+[ExternalLLMClient]
+2025-04-21 15:11:47.719307 receive response, time spent: 23.969544649124146 s.
+[ExternalLLMClient]
+2025-04-21 15:12:08.336885 create completion...
+[ExternalLLMClient]
+2025-04-21 15:12:39.140597 receive response, time spent: 30.80315113067627 s.
+[ExternalLLMClient]
+2025-04-21 15:19:46.545429 create completion...
+[ExternalLLMClient]
+2025-04-21 15:20:48.665094 receive response, time spent: 62.09993362426758 s.
+[ExternalLLMClient]
+2025-04-21 15:21:25.489398 create completion...
+[ExternalLLMClient]
+2025-04-21 15:22:24.686466 receive response, time spent: 59.197067737579346 s.
+[ExternalLLMClient]
+2025-04-21 15:28:27.648423 create completion...
+[ExternalLLMClient]
+2025-04-21 15:28:43.262203 receive response, time spent: 15.587695837020874 s.
+[ExternalLLMClient]
+2025-04-21 15:29:21.968913 create completion...
+[ExternalLLMClient]
+2025-04-21 15:29:51.728860 receive response, time spent: 29.759946584701538 s.
+[ExternalLLMClient]
+2025-04-21 15:31:08.164652 create completion...
+[ExternalLLMClient]
+2025-04-21 15:31:30.512355 receive response, time spent: 22.347702741622925 s.
+[ExternalLLMClient]
+2025-04-21 15:34:21.674690 create completion...
+[ExternalLLMClient]
+2025-04-21 15:34:31.802976 receive response, time spent: 10.128285884857178 s.
+[ExternalLLMClient]
+2025-04-21 15:36:17.628749 create completion...
+[ExternalLLMClient]
+2025-04-21 15:36:26.771327 receive response, time spent: 9.142578363418579 s.
+[ExternalLLMClient]
+2025-04-21 15:42:58.139606 create completion...
+[ExternalLLMClient]
+2025-04-21 15:43:25.121656 receive response, time spent: 26.98205018043518 s.
+[ExternalLLMClient]
+2025-04-21 15:45:56.812326 create completion...
+[ExternalLLMClient]
+2025-04-21 15:47:10.571738 receive response, time spent: 73.75941205024719 s.
+[ExternalLLMClient]
+2025-04-21 15:47:32.154578 create completion...
+[ExternalLLMClient]
+2025-04-21 15:47:41.161728 receive response, time spent: 9.00661587715149 s.
+[ExternalLLMClient]
+2025-04-21 15:50:21.785919 create completion...
+[ExternalLLMClient]
+2025-04-21 15:50:31.459299 receive response, time spent: 9.673339605331421 s.

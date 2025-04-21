@@ -12,6 +12,9 @@ from rag.trunk.markdown import split_document
 from rag.trunk.convert_files import convert_to_markdown
 from rag.trunk.api.api_json import process_api_json
 import ast
+import json
+from datetime import datetime
+import hashlib
 
 app = Flask(__name__)
 # 启用CORS，允许跨域请求
@@ -22,6 +25,12 @@ current_workflow = None
 
 # 添加一个全局字典来存储每个会话的对话历史
 chat_histories = {}
+chat_archives = {}  # 存储归档的对话
+ARCHIVE_PATH = os.path.join(os.path.dirname(__file__), 'chat_archives')
+
+# 确保存档目录存在
+if not os.path.exists(ARCHIVE_PATH):
+    os.makedirs(ARCHIVE_PATH)
 
 def load_workflow(config_path: str):
     """加载workflow配置"""
@@ -171,7 +180,9 @@ def chat():
         # 将当前问题添加到历史记录
         chat_histories[session_id].append({
             'role': 'user',
-            'content': question
+            'content': question,
+            'rationale': '',  # 添加理由字段
+            'references': []  # 添加参考来源字段
         })
         
         # 构建完整的上下文
@@ -201,10 +212,12 @@ def chat():
                 except:
                     continue
         
-        # 将回答添加到历史记录
+        # 将回答添加到历史记录，包含理由和参考来源
         chat_histories[session_id].append({
             'role': 'assistant',
-            'content': answer
+            'content': answer,
+            'rationale': rationale,
+            'references': references if references else ['无']
         })
         
         response_data = {
@@ -228,11 +241,143 @@ def get_chat_history():
 
 @app.route('/api/qa/clear', methods=['POST'])
 def clear_chat_history():
-    """清空对话历史"""
+    """清空对话历史并归档"""
     session_id = request.json.get('session_id')
-    if session_id in chat_histories:
+    if session_id in chat_histories and chat_histories[session_id]:
+        try:
+            # 获取第一个用户问题作为标题
+            first_question = next(msg['content'] for msg in chat_histories[session_id] if msg['role'] == 'user')
+            current_history = chat_histories[session_id]
+            
+            # 检查是否是现有对话的延续
+            existing_archive_id = None
+            for filename in os.listdir(ARCHIVE_PATH):
+                if not filename.endswith('.json'):
+                    continue
+                    
+                with open(os.path.join(ARCHIVE_PATH, filename), 'r', encoding='utf-8') as f:
+                    archive_data = json.load(f)
+                    # 如果第一个问题相同，认为是同一个对话的延续
+                    if archive_data['title'] == first_question:
+                        existing_archive_id = filename[:-5]  # 移除.json后缀
+                        break
+            
+            # 创建归档记录，确保包含理由和参考来源
+            archive_data = {
+                'title': first_question,
+                'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'history': current_history,  # 现在包含了理由和参考来源
+                'session_id': session_id
+            }
+            
+            if existing_archive_id:
+                # 更新现有记录
+                archive_id = existing_archive_id
+                print(f"更新现有对话记录: {archive_id}")
+            else:
+                # 创建新记录
+                archive_id = hashlib.md5(f"{first_question}{datetime.now()}".encode()).hexdigest()
+                print(f"创建新对话记录: {archive_id}")
+            
+            # 保存到本地文件
+            archive_file = os.path.join(ARCHIVE_PATH, f'{archive_id}.json')
+            with open(archive_file, 'w', encoding='utf-8') as f:
+                json.dump(archive_data, f, ensure_ascii=False, indent=2)
+            
+            # 保存到内存中
+            chat_archives[archive_id] = archive_data
+            
+        except Exception as e:
+            print(f"归档对话失败: {str(e)}")
+        
+        # 清空当前会话历史
         chat_histories[session_id] = []
-    return jsonify({'success': True, 'message': '对话历史已清空'})
+        
+    return jsonify({'success': True, 'message': '对话历史已清空并归档'})
+
+@app.route('/api/qa/archives', methods=['GET'])
+def get_chat_archives():
+    """获取所有归档的对话列表"""
+    try:
+        archives = []
+        # 读取目录下所有归档文件
+        for filename in os.listdir(ARCHIVE_PATH):
+            if filename.endswith('.json'):
+                with open(os.path.join(ARCHIVE_PATH, filename), 'r', encoding='utf-8') as f:
+                    archive_data = json.load(f)
+                    archives.append({
+                        'id': filename[:-5],  # 移除.json后缀
+                        'title': archive_data['title'],
+                        'timestamp': archive_data['timestamp']
+                    })
+        return jsonify({
+            'success': True,
+            'data': sorted(archives, key=lambda x: x['timestamp'], reverse=True)
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'获取归档列表失败：{str(e)}'
+        })
+
+@app.route('/api/qa/archives/<archive_id>', methods=['GET'])
+def restore_chat_archive(archive_id):
+    """恢复归档的对话"""
+    try:
+        archive_file = os.path.join(ARCHIVE_PATH, f'{archive_id}.json')
+        if not os.path.exists(archive_file):
+            return jsonify({
+                'success': False,
+                'message': '找不到指定的归档对话'
+            })
+            
+        with open(archive_file, 'r', encoding='utf-8') as f:
+            archive_data = json.load(f)
+            
+        # 恢复对话历史
+        session_id = archive_data['session_id']
+        chat_histories[session_id] = archive_data['history']
+        
+        return jsonify({
+            'success': True,
+            'data': {
+                'session_id': session_id,
+                'history': archive_data['history']
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'恢复归档对话失败：{str(e)}'
+        })
+
+@app.route('/api/qa/archives/<archive_id>', methods=['DELETE'])
+def delete_chat_archive(archive_id):
+    """删除归档的对话"""
+    try:
+        archive_file = os.path.join(ARCHIVE_PATH, f'{archive_id}.json')
+        if not os.path.exists(archive_file):
+            return jsonify({
+                'success': False,
+                'message': '找不到指定的归档对话'
+            })
+            
+        # 删除文件
+        os.remove(archive_file)
+        
+        # 如果存在内存中的记录也删除
+        if archive_id in chat_archives:
+            del chat_archives[archive_id]
+            
+        return jsonify({
+            'success': True,
+            'message': '归档对话已删除'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'删除归档对话失败：{str(e)}'
+        })
 
 @app.route('/api/documents', methods=['GET'])
 def get_documents():

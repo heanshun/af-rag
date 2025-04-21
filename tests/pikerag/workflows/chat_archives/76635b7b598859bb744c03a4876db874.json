@@ -1,0 +1,21 @@
+{
+  "title": "加班工资是多少",
+  "timestamp": "2025-04-21 15:47:19",
+  "history": [
+    {
+      "role": "user",
+      "content": "加班工资是多少",
+      "rationale": "",
+      "references": []
+    },
+    {
+      "role": "assistant",
+      "content": "200",
+      "rationale": "The context explicitly states '加班工资为一天200。' (Overtime pay is 200 per day), which directly answers the question about the amount of overtime pay.",
+      "references": [
+        "pdfTest.pdf"
+      ]
+    }
+  ],
+  "session_id": "h3r4cv"
+}
