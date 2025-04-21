@@ -10,6 +10,7 @@ import shutil
 from rag.trunk.save_mongo import delete_document_by_name
 from rag.trunk.markdown import split_document, convert_to_markdown
 from rag.trunk.api.api_json import process_api_json
+import ast
 
 app = Flask(__name__)
 # 启用CORS，允许跨域请求
@@ -17,6 +18,9 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 # 全局变量存储当前workflow实例
 current_workflow = None
+
+# 添加一个全局字典来存储每个会话的对话历史
+chat_histories = {}
 
 def load_workflow(config_path: str):
     """加载workflow配置"""
@@ -145,18 +149,38 @@ def load_config():
     except Exception as e:
         return jsonify({'success': False, 'message': f'加载配置失败：{str(e)}'})
 
-@app.route('/api/qa/ask', methods=['POST'])
-def ask():
-    """提问接口"""
+@app.route('/api/qa/chat', methods=['POST'])
+def chat():
+    """对话接口"""
     if current_workflow is None:
         return jsonify({'success': False, 'message': '请先加载配置文件'})
     
-    question = request.json.get('question', '').strip()
+    data = request.json
+    question = data.get('question', '').strip()
+    session_id = data.get('session_id')  # 用于标识不同的对话会话
+    
     if not question:
         return jsonify({'success': False, 'message': '问题不能为空'})
     
     try:
-        qa = BaseQaData(question=question)
+        # 获取或创建会话历史
+        if session_id not in chat_histories:
+            chat_histories[session_id] = []
+        
+        # 将当前问题添加到历史记录
+        chat_histories[session_id].append({
+            'role': 'user',
+            'content': question
+        })
+        
+        # 构建完整的上下文
+        context = "\n".join([
+            f"{'用户' if msg['role'] == 'user' else '助手'}: {msg['content']}"
+            for msg in chat_histories[session_id]
+        ])
+        
+        # 使用完整上下文进行回答
+        qa = BaseQaData(question=context)
         result = current_workflow.answer(qa, 0)
         
         # 解析回答内容
@@ -169,8 +193,6 @@ def ask():
         if reference_chunks:
             for chunk in reference_chunks:
                 try:
-                    # 尝试从字符串中提取文档名称
-                    import ast
                     chunk_dict = ast.literal_eval(chunk)
                     doc_name = chunk_dict.get('doc_name', '')
                     if doc_name:
@@ -178,15 +200,38 @@ def ask():
                 except:
                     continue
         
+        # 将回答添加到历史记录
+        chat_histories[session_id].append({
+            'role': 'assistant',
+            'content': answer
+        })
+        
         response_data = {
             'answer': answer,
             'rationale': rationale,
-            'references': references if references else ['无']
+            'references': references if references else ['无'],
+            'history': chat_histories[session_id]  # 返回完整的对话历史
         }
         
         return jsonify({'success': True, 'data': response_data})
     except Exception as e:
         return jsonify({'success': False, 'message': f'回答失败：{str(e)}'})
+
+@app.route('/api/qa/history', methods=['GET'])
+def get_chat_history():
+    """获取对话历史"""
+    session_id = request.args.get('session_id')
+    if not session_id or session_id not in chat_histories:
+        return jsonify({'success': True, 'data': []})
+    return jsonify({'success': True, 'data': chat_histories[session_id]})
+
+@app.route('/api/qa/clear', methods=['POST'])
+def clear_chat_history():
+    """清空对话历史"""
+    session_id = request.json.get('session_id')
+    if session_id in chat_histories:
+        chat_histories[session_id] = []
+    return jsonify({'success': True, 'message': '对话历史已清空'})
 
 @app.route('/api/documents', methods=['GET'])
 def get_documents():

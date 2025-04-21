@@ -3,21 +3,13 @@ Initialized MongoDB connection with URI: mongodb://admin:Class123!@localhost:270
 [Evaluator ]
 Evaluator initialized with ['ExactMatch'].
 [QaMongoDBRetriever]
-Starting content retrieval for query: 何安顺和郑筱晓哪个大
+Starting content retrieval for query: 用户: 何安顺和郑筱晓哪个大
 [QaMongoDBRetriever]
-Vector search returned 2 results: [[457426448533184730, 0.7504613399505615, "何安顺24岁"], [457426448533184722, 0.7844074964523315, "郑筱晓23岁"]]
+Vector search returned 2 results: [[457426448533184722, 0.7330695390701294, "郑筱晓23岁"], [457426448533184730, 0.74183189868927, "何安顺24岁"]]
 [QaMongoDBRetriever]
 Created new MongoDB client connection
 [QaMongoDBRetriever]
-Processing vector_id: 457426448533184730, distance: 0.7504613399505615, content: 何安顺24岁
-[QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 680202f72537a4668cc1836d, doc_id: 680202f72537a4668cc1836a
-[QaMongoDBRetriever]
-Retrieved node content for node_id: 680202f72537a4668cc1836d
-[QaMongoDBRetriever]
-Retrieved document info for doc_id: 680202f72537a4668cc1836a
-[QaMongoDBRetriever]
-Processing vector_id: 457426448533184722, distance: 0.7844074964523315, content: 郑筱晓23岁
+Processing vector_id: 457426448533184722, distance: 0.7330695390701294, content: 郑筱晓23岁
 [QaMongoDBRetriever]
 Retrieved 1 siblings for parent_id: 680202f22537a4668cc18365, doc_id: 680202f22537a4668cc18362
 [QaMongoDBRetriever]
@@ -25,6 +17,34 @@ Retrieved node content for node_id: 680202f22537a4668cc18365
 [QaMongoDBRetriever]
 Retrieved document info for doc_id: 680202f22537a4668cc18362
 [QaMongoDBRetriever]
+Processing vector_id: 457426448533184730, distance: 0.74183189868927, content: 何安顺24岁
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 680202f72537a4668cc1836d, doc_id: 680202f72537a4668cc1836a
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 680202f72537a4668cc1836d
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 680202f72537a4668cc1836a
+[QaMongoDBRetriever]
 Successfully retrieved 2 documents for query
+[QaMongoDBRetriever]
+Closed MongoDB client connection
+[QaMongoDBRetriever]
+Starting content retrieval for query: 用户: 何安顺和郑筱晓哪个大
+助手: 何安顺大
+用户: 他们的年龄分别是多少
+[QaMongoDBRetriever]
+Vector search returned 1 results: [[457426448533184730, 0.7235190868377686, "何安顺24岁"]]
+[QaMongoDBRetriever]
+Created new MongoDB client connection
+[QaMongoDBRetriever]
+Processing vector_id: 457426448533184730, distance: 0.7235190868377686, content: 何安顺24岁
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 680202f72537a4668cc1836d, doc_id: 680202f72537a4668cc1836a
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 680202f72537a4668cc1836d
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 680202f72537a4668cc1836a
+[QaMongoDBRetriever]
+Successfully retrieved 1 documents for query
 [QaMongoDBRetriever]
 Closed MongoDB client connection
