@@ -44,3 +44,4 @@ PyPDF2
 pandas 
 openpyxl 
 tabulate
+beautifulsoup4

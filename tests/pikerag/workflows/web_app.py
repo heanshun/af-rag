@@ -8,7 +8,8 @@ from pikerag.utils.config_loader import load_dot_env
 import importlib
 import shutil
 from rag.trunk.save_mongo import delete_document_by_name
-from rag.trunk.markdown import split_document, convert_to_markdown
+from rag.trunk.markdown import split_document
+from rag.trunk.convert_files import convert_to_markdown
 from rag.trunk.api.api_json import process_api_json
 import ast
 
@@ -330,7 +331,7 @@ def upload_document():
             root = process_api_json(content)
         else:
             # 其他格式文件处理
-            supported_formats = ['pdf', 'docx', 'txt', 'xlsx', 'csv', 'md']
+            supported_formats = ['pdf', 'docx', 'txt', 'xlsx', 'html', 'htm', 'md']
             if file_extension not in supported_formats:
                 return jsonify({'success': False, 'message': f'不支持的文件格式：{file_extension}'})
             
@@ -340,10 +341,7 @@ def upload_document():
                 root = split_document(content)
             else:
                 # 其他格式先转换为markdown
-                from io import BytesIO
-                file_obj = BytesIO(file_content)
-                file_obj.filename = file.filename
-                content = convert_to_markdown(file_obj, file_extension)
+                content = convert_to_markdown(file_path, file_extension)
                 root = split_document(content)
         
         # 保存到MongoDB
