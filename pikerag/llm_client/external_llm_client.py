@@ -53,12 +53,12 @@ class ExternalLLMClient(BaseLLMClient):
 
     def _init_client(self, api_key, api_url):
         if not self.client:
-            print(f"初始化OpenAI客户端，API URL: {api_url}")
+            print(f"初始化客户端，API URL: {api_url}")
             self.client = OpenAI(
                 api_key=api_key,
                 base_url=api_url
             )
-            print("OpenAI客户端初始化成功")
+            print("客户端初始化成功")
 
     def _wrap_body(self, messages: List[dict], **llm_config) -> tuple:
         api_key = llm_config.get("api_key", "")
