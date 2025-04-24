@@ -355,3 +355,89 @@ API调用失败: Error code: 404
 2025-04-23 10:51:31.119136 create completion...
 [ExternalLLMClient]
 2025-04-23 10:51:53.442089 receive response, time spent: 22.32295322418213 s.
+[ExternalLLMClient]
+2025-04-23 14:48:48.747490 create completion...
+API调用失败: 'Stream' object has no attribute 'choices'
+[ExternalLLMClient]
+2025-04-23 14:48:50.273659 receive response, time spent: 1.511016845703125 s.
+未返回内容
+最后的消息: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'国庆放假一周。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'国庆放假一周。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'五一放假七天。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'五一放假七天。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'过年也放七天。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'过年也放七天。\'], \'parent\': \'\'}\n\n\n# Question\n国庆放几天\n\nLet\'s think step by step.'}
+[ExternalLLMClient]
+2025-04-23 14:58:51.171688 create completion...
+API调用失败: 'Stream' object has no attribute 'choices'
+[ExternalLLMClient]
+2025-04-23 14:58:52.627166 receive response, time spent: 1.4554786682128906 s.
+未返回内容
+最后的消息: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'国庆放假一周。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'国庆放假一周。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'五一放假七天。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'五一放假七天。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'过年也放七天。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'过年也放七天。\'], \'parent\': \'\'}\n\n\n# Question\n国庆放几天\n\nLet\'s think step by step.'}
+[ExternalLLMClient]
+2025-04-23 15:09:44.832878 create completion...
+API调用失败: 'Stream' object has no attribute 'choices'
+[ExternalLLMClient]
+2025-04-23 15:09:46.000649 receive response, time spent: 1.1677708625793457 s.
+未返回内容
+最后的消息: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'五一放假七天。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'五一放假七天。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'国庆放假一周。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'国庆放假一周。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'过年也放七天。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'过年也放七天。\'], \'parent\': \'\'}\n\n\n# Question\n国庆放几天\n\nLet\'s think step by step.'}
+[ExternalLLMClient]
+2025-04-23 15:10:55.773632 create completion...
+API调用失败: cannot access local variable 'reasoning_content' where it is not associated with a value
+[ExternalLLMClient]
+2025-04-23 15:10:57.219318 receive response, time spent: 1.445685625076294 s.
+未返回内容
+最后的消息: {'role': 'user', 'content': '# Task\nYour task is to answer a question referring to a given context, if any.\nFor answering the Question at the end, you need to first read the articles, reports, or context provided, then give your final answer.\n\n# Output format\nYour output should strictly follow the format below. Make sure your output parsable by json in Python.\n{\n    "answer": <Your Answer, format it as a string.>,\n    "rationale": <rationale behind your choice>\n}\n\n# Context, if any\nRelated context, reports, or articles: \n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'国庆放假一周。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'国庆放假一周。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'五一放假七天。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'五一放假七天。\'], \'parent\': \'\'}\n\n{\'doc_id\': \'680854e6036e12339e5acdcc\', \'doc_name\': \'docxTest.docx\', \'matched_content\': \'过年也放七天。\', \'node_type\': \'sentence\', \'level\': 3, \'siblings\': [\'过年也放七天。\'], \'parent\': \'\'}\n\n\n# Question\n国庆放几天\n\nLet\'s think step by step.'}
+[ExternalLLMClient]
+2025-04-23 15:12:15.777765 create completion...
+[ExternalLLMClient]
+2025-04-23 15:12:41.778651 receive response, time spent: 26.000885725021362 s.
+[ExternalLLMClient]
+2025-04-23 16:41:16.648606 create completion...
+[ExternalLLMClient]
+2025-04-23 16:45:03.939802 create completion...
+[ExternalLLMClient]
+2025-04-23 16:48:52.662709 create completion...
+[ExternalLLMClient]
+2025-04-23 16:48:54.853356 receive response, time spent: 2.1906471252441406 s.
+[ExternalLLMClient]
+2025-04-24 10:46:56.649240 create stream completion...
+[ExternalLLMClient]
+2025-04-24 10:53:50.998976 create stream completion...
+[ExternalLLMClient]
+2025-04-24 11:20:01.794513 create stream completion...
+[ExternalLLMClient]
+2025-04-24 11:21:43.359959 create stream completion...
+[ExternalLLMClient]
+2025-04-24 13:32:53.525476 create stream completion...
+[ExternalLLMClient]
+2025-04-24 14:06:48.554516 create completion...
+[ExternalLLMClient]
+2025-04-24 14:06:57.416472 receive response, time spent: 8.852052688598633 s.
+[ExternalLLMClient]
+2025-04-24 14:12:19.427750 create completion...
+[ExternalLLMClient]
+2025-04-24 14:12:25.844582 receive response, time spent: 6.415460824966431 s.
+[ExternalLLMClient]
+2025-04-24 14:26:22.955919 create completion...
+[ExternalLLMClient]
+2025-04-24 14:26:35.792574 receive response, time spent: 12.824347972869873 s.
+[ExternalLLMClient]
+2025-04-24 14:30:17.314121 create completion...
+[ExternalLLMClient]
+2025-04-24 14:30:28.980628 receive response, time spent: 11.66597318649292 s.
+[ExternalLLMClient]
+2025-04-24 14:32:03.134555 create completion...
+[ExternalLLMClient]
+2025-04-24 14:32:43.124178 receive response, time spent: 39.97795844078064 s.
+[ExternalLLMClient]
+2025-04-24 14:32:52.962569 create completion...
+[ExternalLLMClient]
+2025-04-24 14:33:16.208225 receive response, time spent: 23.24565577507019 s.
+[ExternalLLMClient]
+2025-04-24 14:34:57.240237 create completion...
+[ExternalLLMClient]
+2025-04-24 14:36:17.524569 receive response, time spent: 80.28356289863586 s.
+[ExternalLLMClient]
+2025-04-24 14:37:16.185424 create completion...
+[ExternalLLMClient]
+2025-04-24 14:37:25.713633 receive response, time spent: 9.528209447860718 s.
+[ExternalLLMClient]
+2025-04-24 14:40:28.044119 create completion...
+[ExternalLLMClient]
+2025-04-24 14:41:44.518627 receive response, time spent: 76.47450852394104 s.

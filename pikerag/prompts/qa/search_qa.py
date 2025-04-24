@@ -7,7 +7,7 @@ from pikerag.prompts import BaseContentParser, CommunicationProtocol, MessageTem
 
 search_qa_template = MessageTemplate(
     template=[
-        ("system", "You are a helpful AI assistant on question answering with search capabilities."),
+        ("system", "You are a helpful AI assistant on question answering by using chinese only with search capabilities."),
         ("user", """Answer the given question. \
 You must conduct reasoning inside <think> and </think> first every time you get new information. \
 After reasoning, if you find you lack some knowledge, you can call a search engine by <search> query </search> and it will return the top searched results between <information> and </information>. \

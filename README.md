@@ -89,36 +89,58 @@ docker-compose logs milvus-standalone
 
 ## 工作流程
 
-我们对原有的PIKE-RAG系统进行了以下改进：
+## 环境准备
+1. 确保已安装 Docker 和相关依赖
+2. 启动必要的服务:
+   - Docker 服务
+   - Milvus 向量数据库服务
+   - MongoDB 数据库服务
 
-系统支持以下三种工作模式：
+## 配置说明
+推荐使用阿里云百炼API。
+1. 在 `vectorapi\embeddings.py` 中配置API：
+   ```python
+   API_KEY = "your_api_key"
+   ```
 
-### 1. 批量测试模式
+2. 配置your_api_key在tests\pikerag\workflows\configs的.yml文件中。
 
-通过运行`test_answer.py`，结合`question.txt`中的问题进行批量测试：
+## 运行方式
+### 方式一：Web 应用方式（推荐）
+1. 启动后端服务：
+   ```bash
+   python -m tests.pikerag.workflows.web_app
+   ```
+
+2. 部署前端界面：
+   ```bash
+   # 克隆前端项目
+   git clone https://github.com/heanshun/af-rag-vue.git
+   
+   # 进入项目目录
+   cd af-rag-vue
+   
+   # 安装依赖并启动
+   npm install
+   npm run dev
+   ```
+
+3. 前端界面预览：
+   
+   部署成功后，您将看到如下界面：
+   - 左侧为历史对话列表
+   - 右侧为当前对话内容
+   - 支持查看问答的详细信息，包括回答内容、理由和参考来源
+   ![image.png](image.png)
+
+### 方式二：命令行问答方式
+直接执行以下命令进行问答测试：
 
 ```bash
-python -m tests.pikerag.workflows.test_answer tests\pikerag\workflows\qa\mongodb_qa_retriever.yml 0
-```
-### 2. 交互式问答模式
-
-启动交互式问答界面，支持实时对话：
-
-```bash
-python -m tests.pikerag.workflows.test_answer_interactive
+python -m tests.pikerag.workflows.test_answer tests\pikerag\workflows\configs\mongodb_qa_retriever.yml 0
 ```
 
-### 3. Web应用模式
-
-启动Web界面，提供可视化的问答窗口和配置管理：
-
-```bash
-python -m tests.pikerag.workflows.web_app
-```
 ## 贡献
 
 欢迎提交Issue和Pull Request来帮助改进项目。
 
-## 许可证
-
-[待补充许可证信息]

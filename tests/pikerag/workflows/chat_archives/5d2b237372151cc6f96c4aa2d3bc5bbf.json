@@ -1,0 +1,21 @@
+{
+  "title": "过年怎么放假",
+  "timestamp": "2025-04-24 14:41:44",
+  "history": [
+    {
+      "role": "user",
+      "content": "过年怎么放假",
+      "rationale": "",
+      "references": []
+    },
+    {
+      "role": "assistant",
+      "content": "过年放假七天。",
+      "rationale": "根据上下文中的第三条信息'过年也放七天。'，明确指出过年期间的放假天数为七天，因此直接引用该内容作为答案。",
+      "references": [
+        "docxTest.docx"
+      ]
+    }
+  ],
+  "session_id": "eoclkr"
+}

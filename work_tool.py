@@ -8,7 +8,7 @@
 # 导入milvus模块
 import vectorapi.milvus as milvus
 from pymilvus import DataType
-import gptapi.embedding as embedding
+from vectorapi.embeddings import get_embeddings_aliyun
 
 # 定义函数insert_data_to_collection，接收collection_name和vectors两个参数
 def insert_data_to_collection(messages, vectors):
@@ -20,7 +20,7 @@ def insert_data_to_collection(messages, vectors):
     ]
     milvus.insert_data(collection_name, data)
 
-def insert_message_to_collection(message, collection_name, content="", embedding_func=embedding.send_info_to_embedding):
+def insert_message_to_collection(message, collection_name, content="", embedding_func = get_embeddings_aliyun):
     # 获取message的向量表示
     vectors = embedding_func(message)
 
@@ -93,7 +93,7 @@ def get_simple_messages(message, collection_name, threshold=0.1):
 
     return result
 
-def get_messages_info(message, collection_name, limit=30, threshold=None, embedding_func=embedding.send_info_to_embedding):
+def get_messages_info(message, collection_name, limit=30, threshold=None, embedding_func = get_embeddings_aliyun):
     # 获取message的向量表示
     vectors = embedding_func(message)
     results = milvus.search_similar_content(collection_name, [vectors], limit)

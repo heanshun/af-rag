@@ -9,7 +9,7 @@ from pikerag.utils.json_parser import parse_json_v2, parse_json
 
 generation_qa_template = MessageTemplate(
     template=[
-        ("system", "You are a helpful AI assistant on question answering."),
+        ("system", "You are a helpful AI assistant on question answering by using chinese only."),
         ("user", """
 # Task
 Your task is to give your answer to the given question.
@@ -33,7 +33,7 @@ Let's think step by step.
 
 generation_qa_with_reference_template = MessageTemplate(
     template=[
-        ("system", "You are a helpful AI assistant on question answering."),
+        ("system", "You are a helpful AI assistant on question answering by using chinese only."),
         ("user", """
 # Task
 Your task is to answer a question referring to a given context, if any.

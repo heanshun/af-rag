@@ -57,7 +57,7 @@ llm_client:
   args: {}
 
   llm_config:
-    api_key: "sk-062f03efe4df47298433b72464c190ce"  # 请替换为您的API Key
+    api_key: "your_api_key"  # 请替换为您的API Key
     api_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
     model: "deepseek-r1"  # 可选模型：deepseek-r1, qwen-turbo等
 

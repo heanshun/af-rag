@@ -1,0 +1,38 @@
+[QaMongoDBRetriever]
+Initialized MongoDB connection with URI: mongodb://admin:Class123!@localhost:27017/?authSource=admin
+[Evaluator ]
+Evaluator initialized with ['ExactMatch'].
+[QaMongoDBRetriever]
+Starting content retrieval for query: 用户: 过年怎么放假
+[QaMongoDBRetriever]
+Vector search returned 3 results: [[457539864700602073, 0.5568029284477234, "过年也放七天。"], [457539864700602069, 0.6244416236877441, "五一放假七天。"], [457539864700602071, 0.6729782223701477, "国庆放假一周。"]]
+[QaMongoDBRetriever]
+Created new MongoDB client connection
+[QaMongoDBRetriever]
+Processing vector_id: 457539864700602073, distance: 0.5568029284477234, content: 过年也放七天。
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 680854eb036e12339e5acdd3, doc_id: 680854e6036e12339e5acdcc
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 680854eb036e12339e5acdd3
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 680854e6036e12339e5acdcc
+[QaMongoDBRetriever]
+Processing vector_id: 457539864700602069, distance: 0.6244416236877441, content: 五一放假七天。
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 680854eb036e12339e5acdd1, doc_id: 680854e6036e12339e5acdcc
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 680854eb036e12339e5acdd1
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 680854e6036e12339e5acdcc
+[QaMongoDBRetriever]
+Processing vector_id: 457539864700602071, distance: 0.6729782223701477, content: 国庆放假一周。
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 680854eb036e12339e5acdd2, doc_id: 680854e6036e12339e5acdcc
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 680854eb036e12339e5acdd2
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 680854e6036e12339e5acdcc
+[QaMongoDBRetriever]
+Successfully retrieved 3 documents for query
+[QaMongoDBRetriever]
+Closed MongoDB client connection
