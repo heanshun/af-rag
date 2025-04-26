@@ -5,6 +5,7 @@ import docx
 import PyPDF2
 import pandas as pd
 import openpyxl
+from rag.trunk.convert_files import convert_to_markdown
 
 @dataclass
 class DocNode:
@@ -26,41 +27,78 @@ def split_document(doc_text: str) -> DocNode:
     将文档按层级切分为树状结构
     返回根节点
     """
-    # 创建根节点
     root = DocNode(content="ROOT", level=0)
+    chapters = re.split(r'(?m)^#+\s+', doc_text)
     
-    # 按章节分割（假设用#作为章节标记）
-    chapters = re.split(r'(?m)^#\s+', doc_text)
-    
-    for chapter_text in chapters[1:]:  # 跳过第一个空字符串
-        # 创建章节节点
+    for chapter_text in chapters[1:]:
         chapter_lines = chapter_text.strip().split('\n', 1)
         chapter_title = chapter_lines[0]
         chapter_node = DocNode(content=chapter_title, level=1, type="chapter")
         root.add_child(chapter_node)
         
         if len(chapter_lines) > 1:
-            # 按段落分割
             paragraphs = chapter_lines[1].strip().split('\n\n')
-            
-            for para_text in paragraphs:
-                # 创建空的段落节点
+            i = 0
+            while i < len(paragraphs):
+                para_text = paragraphs[i].strip()
+                
+                # 检查是否是表格开始
+                if (para_text.startswith('|') and para_text.endswith('|') and 
+                    i + 1 < len(paragraphs) and 
+                    paragraphs[i + 1].strip().startswith('|') and 
+                    '---' in paragraphs[i + 1]):
+                    
+                    print("检测到表格开始")
+                    # 创建表格节点
+                    para_node = DocNode(content="表格", level=2, type="table")
+                    chapter_node.add_child(para_node)
+                    
+                    # 获取表头
+                    headers = [h.strip() for h in para_text.strip('|').split('|') if h.strip()]
+                    
+                    # 跳过分隔行
+                    i += 2
+                    
+                    # 收集表格数据行
+                    while i < len(paragraphs):
+                        row_text = paragraphs[i].strip()
+                        if not (row_text.startswith('|') and row_text.endswith('|')):
+                            break
+                            
+                        cells = [c.strip() for c in row_text.strip('|').split('|') if c.strip()]
+                        if cells:
+                            # 检查每个单元格内容是否以标点结尾
+                            processed_cells = []
+                            for j in range(len(headers)):
+                                if j < len(cells):
+                                    cell_text = cells[j]
+                                    if not cell_text[-1] in '。！？，；,.!?;':
+                                        cell_text += '。'
+                                    processed_cells.append(f"{headers[j]}：{cell_text}")
+                            
+                            row_content = ' '.join(processed_cells)
+                            if row_content.strip():
+                                row_node = DocNode(content=row_content, level=3, type="table_row")
+                                para_node.add_child(row_node)
+                        i += 1
+                    continue
+                
+                # 处理普通段落
                 para_node = DocNode(content="", level=2, type="paragraph")
                 chapter_node.add_child(para_node)
                 
-                # 按标点符号分割句子
                 sentences = re.split(r'([。！？；])', para_text)
                 current_sentence = ""
-                
-                for i in range(0, len(sentences), 2):
-                    if i < len(sentences):
-                        current_sentence = sentences[i]
-                        if i + 1 < len(sentences):
-                            current_sentence += sentences[i + 1]
+                for j in range(0, len(sentences), 2):
+                    if j < len(sentences):
+                        current_sentence = sentences[j]
+                        if j + 1 < len(sentences):
+                            current_sentence += sentences[j + 1]
                         
                         if current_sentence.strip():
                             sentence_node = DocNode(content=current_sentence.strip(), level=3, type="sentence")
                             para_node.add_child(sentence_node)
+                i += 1
     
     return root
 
@@ -82,6 +120,7 @@ if __name__ == "__main__":
 # 第二章
 新的章节开始了。这是一段测试文本。
 """
+    markdown_text = convert_to_markdown("rag/test_docs/AI信息化在华通公司的实施方案v1.1.docx", "docx")
     
-    doc_tree = split_document(sample_text)
+    doc_tree = split_document(markdown_text)
     print_document_tree(doc_tree)

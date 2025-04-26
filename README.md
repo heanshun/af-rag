@@ -100,10 +100,10 @@ docker-compose logs milvus-standalone
 推荐使用阿里云百炼API。
 1. 在 `vectorapi\embeddings.py` 中配置API：
    ```python
-   API_KEY = "your_api_key"
+   API_KEY = "sk-062f03efe4df47298433b72464c190ce"
    ```
 
-2. 配置your_api_key在tests\pikerag\workflows\configs的.yml文件中。
+2. 配置sk-062f03efe4df47298433b72464c190ce在tests\pikerag\workflows\configs的.yml文件中。
 
 ## 运行方式
 ### 方式一：Web 应用方式（推荐）

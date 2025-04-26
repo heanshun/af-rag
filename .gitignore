@@ -144,3 +144,8 @@ cython_debug/
 env_configs/
 logs/
 data/
+
+# 新增需要忽略的目录
+rag/test_docs/
+tests/pikerag/workflows/chat_archives/
+tests/pikerag/workflows/retrieved_files/

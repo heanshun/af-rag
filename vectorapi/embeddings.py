@@ -20,7 +20,7 @@ def get_embeddings_aliyun(message):
     try:
         # 初始化OpenAI客户端
         client = OpenAI(
-            api_key="your_api_key",
+            api_key="sk-062f03efe4df47298433b72464c190ce",
             base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
         )
 

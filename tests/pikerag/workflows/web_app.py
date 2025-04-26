@@ -566,13 +566,82 @@ def get_document_content(doc_name):
             content = []
             with pdfplumber.open(file_path) as pdf:
                 for page in pdf.pages:
-                    content.append(page.extract_text())
+                    # 处理表格
+                    tables = page.extract_tables()
+                    for table in tables:
+                        if table:
+                            # 合并跨行的单元格内容
+                            processed_table = []
+                            for row in table:
+                                # 清理每个单元格的内容
+                                cleaned_row = []
+                                for cell in row:
+                                    if cell is None:
+                                        cell = ''
+                                    # 移除多余的换行符和空格
+                                    cell = ' '.join(str(cell).split())
+                                    cleaned_row.append(cell)
+                                
+                                # 如果行不是完全为空，则添加到处理后的表格中
+                                if any(cell.strip() for cell in cleaned_row):
+                                    processed_table.append(cleaned_row)
+                            
+                            # 生成markdown表格
+                            if processed_table:
+                                # 添加表格边框
+                                table_lines = []
+                                for row in processed_table:
+                                    table_lines.append('|' + '|'.join(row) + '|')
+                                
+                                # 添加表格分隔符
+                                if len(table_lines) > 0:
+                                    col_count = len(processed_table[0])
+                                    header_separator = '|' + '|'.join(['---'] * col_count) + '|'
+                                    table_lines.insert(1, header_separator)
+                                    content.extend(table_lines)
+                                    content.append('')  # 添加空行
+                    
+                    # 处理文本内容
+                    text = page.extract_text()
+                    if text:
+                        content.append(text)
+            
             return '\n'.join(content)
             
         elif file_type == 'docx':
             from docx import Document
             doc = Document(file_path)
-            return '\n'.join([paragraph.text for paragraph in doc.paragraphs])
+            content_lines = []
+            para_index = 0
+
+            for element in doc.element.body:
+                if element.tag.endswith('tbl'):  # 表格处理
+                    table = []
+                    for row in element.findall('.//w:tr', {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}):
+                        cells = []
+                        for cell in row.findall('.//w:t', {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}):
+                            cells.append(cell.text)
+                        if cells:
+                            table.append('|' + '|'.join(cells) + '|')
+                    
+                    if table:
+                        header_separator = '|' + '|'.join(['---'] * len(table[0].split('|')[1:-1])) + '|'
+                        table.insert(1, header_separator)
+                        content_lines.extend(table)
+                        content_lines.append('')  # 添加空行
+                
+                elif element.tag.endswith('p'):  # 段落处理
+                    if para_index >= len(doc.paragraphs):
+                        continue
+                        
+                    para = doc.paragraphs[para_index]
+                    text = para.text.strip()
+                    para_index += 1
+                    
+                    if text:
+                        content_lines.append(text)
+
+            return '\n'.join(content_lines)
             
         elif file_type == 'xlsx':
             import pandas as pd

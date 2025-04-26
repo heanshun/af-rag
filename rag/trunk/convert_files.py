@@ -1,67 +1,133 @@
-import re
-import os
-import pdfplumber
-import docx
-import openpyxl
+from pathlib import Path
 from bs4 import BeautifulSoup
+import docx
+import pandas as pd
+from PyPDF2 import PdfReader
+import re
+from pdf2docx import Converter
 
-def convert_to_markdown(filepath: str, filetype: str) -> str:
-    if filetype == 'pdf':
-        text = extract_pdf(filepath)
-    elif filetype == 'docx':
-        text = extract_docx(filepath)
-    elif filetype == 'xlsx':
-        text = extract_excel(filepath)
-    elif filetype == 'html' or filetype == 'htm':
-        text = extract_html(filepath)
-    elif filetype == 'txt':
-        text = extract_txt(filepath)
-    else:
-        raise ValueError(f"Unsupported file type: {filetype}")
-    
-    return format_to_markdown(text)
-
-def extract_pdf(filepath):
-    text = ""
-    with pdfplumber.open(filepath) as pdf:
-        for page in pdf.pages:
-            text += page.extract_text() + "\n"
-    return text
-
-def extract_docx(filepath):
+def convert_docx_to_markdown(filepath):
     doc = docx.Document(filepath)
-    return "\n".join([para.text for para in doc.paragraphs])
+    markdown_lines = []
+    has_heading = False
+    para_index = 0
 
-def extract_excel(filepath):
-    wb = openpyxl.load_workbook(filepath, data_only=True)
-    text = ""
-    for sheet in wb.worksheets:
-        for row in sheet.iter_rows(values_only=True):
-            line = " ".join([str(cell) if cell is not None else '' for cell in row])
-            text += line + "\n"
-    return text
+    for element in doc.element.body:
+        if element.tag.endswith('tbl'):  # 表格处理
+            table = []
+            for row in element.findall('.//w:tr', {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}):
+                cells = []
+                for cell in row.findall('.//w:t', {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}):
+                    cells.append(cell.text)
+                if cells:
+                    table.append('|' + '|'.join(cells) + '|')
+            
+            if table:
+                header_separator = '|' + '|'.join(['---'] * len(table[0].split('|')[1:-1])) + '|'
+                table.insert(1, header_separator)
+                markdown_lines.extend(table)
+                markdown_lines.append('')  # 添加空行
+        
+        elif element.tag.endswith('p'):  # 段落处理
+            if para_index >= len(doc.paragraphs):
+                continue
+                
+            para = doc.paragraphs[para_index]
+            text = para.text.strip()
+            para_index += 1  # 增加段落索引
+            
+            if not text:
+                continue
 
-def extract_html(filepath):
+            style = para.style.name.lower()
+
+            punctuation = '。！？，；,.!?;'  # 定义标点符号
+            if "heading" in style:
+                level = 1  # 所有标题都处理为一级标题
+                markdown_lines.append(f"# {text}")
+                has_heading = True
+            elif len(text) <= 20 and text[-1] not in punctuation:  # 新增判断条件
+                markdown_lines.append(f"# {text}")
+                has_heading = True
+            elif "list" in style or para._element.xpath(".//w:numPr"):
+                markdown_lines.append(f"- {text}")
+            else:
+                markdown_lines.append(text)
+
+    if not has_heading and markdown_lines:
+        markdown_lines.insert(0, "# 第一段")
+
+    return '\n\n'.join(markdown_lines)
+
+def convert_pdf_to_markdown(pdf_path):
+    pdf_path = Path(pdf_path)
+    docx_path = pdf_path.with_suffix('.converted.docx')
+    
+    # Step 1: Convert PDF to DOCX
+    converter = Converter(str(pdf_path))
+    converter.convert(str(docx_path))
+    converter.close()
+    
+    # Step 2: Convert DOCX to Markdown
+    markdown_text = convert_docx_to_markdown(docx_path)
+    
+    # Step 3: 删除临时生成的 docx 文件
+    docx_path.unlink()  # 使用 Path 对象的 unlink() 方法删除文件
+    
+    return markdown_text
+
+def convert_txt_to_markdown(filepath):
+    with open(filepath, 'r', encoding='utf-8') as f:
+        text = f.read()
+    paragraphs = [p.strip() for p in text.split('\n\n') if p.strip()]
+    if paragraphs:
+        paragraphs.insert(0, "# 第一段")
+    return '\n\n'.join(paragraphs)
+
+def convert_html_to_markdown(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f, 'html.parser')
-    return soup.get_text(separator='\n')
 
-def extract_txt(filepath):
-    with open(filepath, 'r', encoding='utf-8') as f:
-        return f.read()
+    markdown_lines = []
+    for tag in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'li']):
+        if tag.name.startswith('h'):
+            level = int(tag.name[1])
+            markdown_lines.append(f"{'#' * level} {tag.get_text(strip=True)}")
+        elif tag.name == 'li':
+            markdown_lines.append(f"- {tag.get_text(strip=True)}")
+        else:
+            markdown_lines.append(tag.get_text(strip=True))
 
-def format_to_markdown(text):
-    paragraphs = [p.strip() for p in text.split('\n') if p.strip()]
-    output = []
-    for idx, para in enumerate(paragraphs, 1):
-        # 将中文句子按 。！？ 分行，但保持为同一段
-        para = re.sub(r'([。！？\?！])([^”’])', r'\1\n\2', para)
-        output.append(f"# 第{idx}章\n{para}")
-    return "\n\n".join(output)
+    if not any(line.startswith('#') for line in markdown_lines) and markdown_lines:
+        markdown_lines.insert(0, "# 第一段")
 
+    return '\n\n'.join(markdown_lines)
 
+def convert_xlsx_to_markdown(filepath):
+    dfs = pd.read_excel(filepath, sheet_name=None)
+    markdown_lines = []
+
+    for sheet_name, df in dfs.items():
+        markdown_lines.append(f"# {sheet_name}")
+        markdown_lines.append(df.to_markdown(index=False))
+
+    return '\n\n'.join(markdown_lines)
+
+def convert_to_markdown(filepath, filetype):
+    if filetype == 'docx':
+        return convert_docx_to_markdown(filepath)
+    elif filetype == 'pdf':
+        return convert_pdf_to_markdown(filepath)
+    elif filetype == 'txt':
+        return convert_txt_to_markdown(filepath)
+    elif filetype == 'html':
+        return convert_html_to_markdown(filepath)
+    elif filetype == '.xlsx':
+        return convert_xlsx_to_markdown(filepath)
+    else:
+        raise ValueError(f"Unsupported file type: {filetype}")
+
+# 示例调用
 if __name__ == "__main__":
-    markdown_text = convert_to_markdown("rag/test_docs/txtTest.txt")
-    print(markdown_text)
-    markdown_text = convert_to_markdown("rag/test_docs/docxTest.docx")
+    markdown_text = convert_to_markdown("rag/test_docs/AI信息化在华通公司的实施方案v1.1.pdf", "pdf")
     print(markdown_text)
