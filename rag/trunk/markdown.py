@@ -123,7 +123,7 @@ if __name__ == "__main__":
 # 第二章
 新的章节开始了。这是一段测试文本。
 """
-    markdown_text = convert_to_markdown("rag/test_docs/奥枫软件人员信息.xlsx", "xlsx")
+    markdown_text = convert_to_markdown("rag/test_docs/htmltest.html", "html")
     
     doc_tree = split_document(markdown_text[1], markdown_text[0])
     print_document_tree(doc_tree)

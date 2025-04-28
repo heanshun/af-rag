@@ -9,7 +9,7 @@ import importlib
 import shutil
 from rag.trunk.save_mongo import delete_document_by_name
 from rag.trunk.markdown import split_document
-from rag.trunk.convert_files import convert_to_markdown, convert_xlsx_to_markdown
+from rag.trunk.convert_files import convert_to_markdown, convert_xlsx_to_markdown, convert_html_to_markdown
 from rag.trunk.api.api_json import process_api_json
 import ast
 import json
@@ -626,10 +626,7 @@ def get_document_content(doc_name):
             return convert_xlsx_to_markdown(file_path)
             
         elif file_type == 'html':
-            from bs4 import BeautifulSoup
-            with open(file_path, 'r', encoding='utf-8') as f:
-                soup = BeautifulSoup(f.read(), 'html.parser')
-                return soup.get_text()
+            return convert_html_to_markdown(file_path)
                 
         elif file_type == 'md':
             with open(file_path, 'r', encoding='utf-8') as f:

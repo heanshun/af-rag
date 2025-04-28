@@ -85,23 +85,83 @@ def convert_txt_to_markdown(filepath):
     return '\n\n'.join(paragraphs)
 
 def convert_html_to_markdown(filepath):
+    """
+    将HTML文件转为Markdown字符串
+    - 有标题，加#标题
+    - 有段落，按段落分
+    - 无段落时，加整体段
+    - 列表转成普通文本
+    - 表格转成Markdown表格
+    """
+    # 读取文件
     with open(filepath, 'r', encoding='utf-8') as f:
-        soup = BeautifulSoup(f, 'html.parser')
+        html_content = f.read()
 
+    soup = BeautifulSoup(html_content, 'html.parser')
     markdown_lines = []
-    for tag in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'li']):
-        if tag.name.startswith('h'):
-            level = int(tag.name[1])
-            markdown_lines.append(f"{'#' * level} {tag.get_text(strip=True)}")
-        elif tag.name == 'li':
-            markdown_lines.append(f"- {tag.get_text(strip=True)}")
-        else:
-            markdown_lines.append(tag.get_text(strip=True))
+    has_title = False
+    has_paragraph = False
+    collected_texts = []
 
-    if not any(line.startswith('#') for line in markdown_lines) and markdown_lines:
-        markdown_lines.insert(0, "# 第一段")
+    def parse_element(element):
+        nonlocal has_title, has_paragraph
 
-    return '\n\n'.join(markdown_lines)
+        if element.name and element.name.startswith('h'):
+            # 标题
+            level = int(element.name[1])
+            text = element.get_text(strip=True)
+            if text:
+                markdown_lines.append('#' * level + ' ' + text)
+                has_title = True
+        elif element.name == 'p':
+            # 段落
+            text = element.get_text(strip=True)
+            if text:
+                markdown_lines.append(text)
+                has_paragraph = True
+        elif element.name in ['ul', 'ol']:
+            # 列表，转成普通文本
+            for li in element.find_all('li'):
+                text = li.get_text(strip=True)
+                if text:
+                    markdown_lines.append(text)
+        elif element.name == 'table':
+            # 表格，转成Markdown表格
+            rows = element.find_all('tr')
+            table_data = []
+            for row in rows:
+                cols = row.find_all(['td', 'th'])
+                table_data.append([col.get_text(strip=True) for col in cols])
+
+            if table_data:
+                header = table_data[0]
+                markdown_lines.append('| ' + ' | '.join(header) + ' |')
+                markdown_lines.append('|' + '|'.join([' --- ' for _ in header]) + '|')
+                for row in table_data[1:]:
+                    markdown_lines.append('| ' + ' | '.join(row) + ' |')
+        elif element.name is not None:
+            # 其他元素，收集纯文本备用（如果最终没有段落时用）
+            text = element.get_text(strip=True)
+            if text:
+                collected_texts.append(text)
+
+    # 只处理body
+    body = soup.body or soup
+    for element in body.find_all(recursive=False):
+        parse_element(element)
+
+    # 如果没有标题，加默认标题
+    if not has_title:
+        markdown_lines.insert(0, '# 第一章')
+
+    # 如果没有段落，整理备用文本为一个整体段
+    if not has_paragraph:
+        if collected_texts:
+            merged_text = ' '.join(collected_texts)
+            markdown_lines.append(merged_text)
+
+    markdown_content = '\n\n'.join(markdown_lines)
+    return markdown_content
 
 def convert_xlsx_to_markdown(filepath):
     dfs = pd.read_excel(filepath, sheet_name=None)
@@ -149,5 +209,5 @@ def convert_to_markdown(filepath, filetype):
 
 # 示例调用
 if __name__ == "__main__":
-    markdown_text = convert_to_markdown("rag/test_docs/奥枫软件人员信息.xlsx", "xlsx")
+    markdown_text = convert_to_markdown("rag/test_docs/htmltest.html", "html")
     print(markdown_text)
