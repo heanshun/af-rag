@@ -266,8 +266,28 @@ class QaMongoDBRetriever(BaseQaRetriever, MongoDBMixin):
                         "siblings": [sib["content"] for sib in siblings],
                         "parent": parent["content"] if parent else None
                     }
-                
-                # 非sentence节点
+                #chapter节点  
+                elif node["type"] == "chapter":
+                    # 获取文档信息
+                    doc = self._get_document_info(node["doc_id"])
+                    
+                    # 获取当前chapter的子节点（paragraphs）
+                    paragraphs = self._get_siblings(node["_id"], node["doc_id"])
+                    # 获取每个paragraph下的所有sentence
+                    all_sentences = []
+                    for para in paragraphs:
+                        sentences = self._get_siblings(para["_id"], node["doc_id"])
+                        all_sentences.extend([sent["content"] for sent in sentences])
+                    if all_sentences:
+                        content = {
+                            "doc_id": node["doc_id"],
+                            "doc_name": doc["name"] if doc else None,
+                            "matched_content": node["content"],
+                            "node_type": node["type"],
+                            "level": node["level"],
+                            "sentences": all_sentences
+                        }
+                # 非sentence和chapter节点
                 else:
                     # 获取文档信息
                     doc = self._get_document_info(node["doc_id"])

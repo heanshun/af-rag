@@ -109,25 +109,45 @@ def convert_xlsx_to_markdown(filepath):
 
     for sheet_name, df in dfs.items():
         markdown_lines.append(f"# {sheet_name}")
-        markdown_lines.append(df.to_markdown(index=False))
+        
+        # 处理每个表格
+        if not df.empty:
+            # 获取表头
+            headers = df.columns.tolist()
+            # 创建表格行
+            table = ['|' + '|'.join(str(col) for col in headers) + '|']
+            # 添加分隔行
+            table.append('|' + '|'.join(['---'] * len(headers)) + '|')
+            # 添加数据行
+            for _, row in df.iterrows():
+                table.append('|' + '|'.join(str(cell) for cell in row) + '|')
+            # 将表格添加到markdown_lines
+            markdown_lines.extend(table)
+            markdown_lines.append('')  # 添加空行
 
     return '\n\n'.join(markdown_lines)
 
 def convert_to_markdown(filepath, filetype):
+    # 获取不带扩展名的文件名
+    filename = Path(filepath).stem
+    
+    # 根据文件类型进行转换
     if filetype == 'docx':
-        return convert_docx_to_markdown(filepath)
+        content = convert_docx_to_markdown(filepath)
     elif filetype == 'pdf':
-        return convert_pdf_to_markdown(filepath)
+        content = convert_pdf_to_markdown(filepath)
     elif filetype == 'txt':
-        return convert_txt_to_markdown(filepath)
+        content = convert_txt_to_markdown(filepath)
     elif filetype == 'html':
-        return convert_html_to_markdown(filepath)
-    elif filetype == '.xlsx':
-        return convert_xlsx_to_markdown(filepath)
+        content = convert_html_to_markdown(filepath)
+    elif filetype == 'xlsx':
+        content = convert_xlsx_to_markdown(filepath)
     else:
         raise ValueError(f"Unsupported file type: {filetype}")
+    
+    return [filename, content]
 
 # 示例调用
 if __name__ == "__main__":
-    markdown_text = convert_to_markdown("rag/test_docs/AI信息化在华通公司的实施方案v1.1.pdf", "pdf")
+    markdown_text = convert_to_markdown("rag/test_docs/奥枫软件人员信息.xlsx", "xlsx")
     print(markdown_text)

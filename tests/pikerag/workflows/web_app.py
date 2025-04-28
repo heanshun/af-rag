@@ -9,7 +9,7 @@ import importlib
 import shutil
 from rag.trunk.save_mongo import delete_document_by_name
 from rag.trunk.markdown import split_document
-from rag.trunk.convert_files import convert_to_markdown
+from rag.trunk.convert_files import convert_to_markdown, convert_xlsx_to_markdown
 from rag.trunk.api.api_json import process_api_json
 import ast
 import json
@@ -400,27 +400,6 @@ def upload_document():
         return jsonify({'success': False, 'message': '未选择文件'})
     
     try:
-        # 修改为绝对路径，并打印出来以便调试
-        retrieved_files_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'retrieved_files')
-        print(f"Trying to save file to: {retrieved_files_dir}")
-        
-        if not os.path.exists(retrieved_files_dir):
-            os.makedirs(retrieved_files_dir)
-            print(f"Created directory: {retrieved_files_dir}")
-            
-        # 保存文件到本地
-        file_path = os.path.join(retrieved_files_dir, doc_name)
-        print(f"Saving file to: {file_path}")
-        
-        file.save(file_path)
-        
-        # 验证文件是否成功保存
-        if os.path.exists(file_path):
-            print(f"File exists after save: {file_path}")
-            print(f"File size: {os.path.getsize(file_path)} bytes")
-        else:
-            print(f"WARNING: File does not exist after save: {file_path}")
-        
         # 检查文档是否已存在
         from pymongo import MongoClient
         client = MongoClient(host="localhost", port=27017, 
@@ -436,7 +415,40 @@ def upload_document():
                 'needConfirm': True
             })
         
-        # 如果文档存在且用户确认替换，先删除旧文档
+        # 修改为绝对路径，并确保目录存在
+        retrieved_files_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'retrieved_files')
+        if not os.path.exists(retrieved_files_dir):
+            os.makedirs(retrieved_files_dir)
+            
+        # 保存文件到本地
+        file_path = os.path.join(retrieved_files_dir, doc_name)
+        file.save(file_path)
+        
+        # 验证文件是否成功保存
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"文件保存失败：{file_path}")
+        
+        # 处理文件
+        file_extension = file.filename.split('.')[-1].lower()
+        
+        if file_extension == 'json':
+            content = file_content.decode('utf-8')
+            root = process_api_json(content)
+        else:
+            supported_formats = ['pdf', 'docx', 'txt', 'xlsx', 'html', 'htm', 'md']
+            if file_extension not in supported_formats:
+                os.remove(file_path)  # 清理不支持的文件
+                return jsonify({'success': False, 'message': f'不支持的文件格式：{file_extension}'})
+            
+            if file_extension == 'md':
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                root = split_document(content)
+            else:
+                content_list = convert_to_markdown(file_path, file_extension)
+                root = split_document(content_list[1], content_list[0])
+        
+        # 如果处理成功，再删除旧文档
         if existing_doc and force_override:
             delete_document_by_name(
                 doc_name,
@@ -446,35 +458,6 @@ def upload_document():
                 host="localhost",
                 port=27017
             )
-            # 删除本地文件（如果存在）
-            if os.path.exists(file_path):
-                os.remove(file_path)
-        
-        # 重新打开文件以读取内容
-        with open(file_path, 'rb') as f:
-            file_content = f.read()
-        
-        # 根据文件扩展名处理文件
-        file_extension = file.filename.split('.')[-1].lower()
-        
-        if file_extension == 'json':
-            # API JSON文件处理
-            content = file_content.decode('utf-8')
-            root = process_api_json(content)
-        else:
-            # 其他格式文件处理
-            supported_formats = ['pdf', 'docx', 'txt', 'xlsx', 'html', 'htm', 'md']
-            if file_extension not in supported_formats:
-                return jsonify({'success': False, 'message': f'不支持的文件格式：{file_extension}'})
-            
-            if file_extension == 'md':
-                # Markdown文件直接处理
-                content = file_content.decode('utf-8')
-                root = split_document(content)
-            else:
-                # 其他格式先转换为markdown
-                content = convert_to_markdown(file_path, file_extension)
-                root = split_document(content)
         
         # 保存到MongoDB
         from rag.trunk.save_mongo import save_doc_tree_to_mongodb
@@ -488,13 +471,6 @@ def upload_document():
             port=27017
         )
         
-        # 在处理完成后再次检查文件
-        if os.path.exists(file_path):
-            print(f"File still exists after processing: {file_path}")
-            print(f"Final file size: {os.path.getsize(file_path)} bytes")
-        else:
-            print(f"WARNING: File was deleted during processing: {file_path}")
-        
         return jsonify({
             'success': True,
             'message': f'文档{"替换" if force_override else "上传"}成功：{doc_name}',
@@ -502,6 +478,9 @@ def upload_document():
         })
         
     except Exception as e:
+        # 发生错误时清理临时文件
+        if 'file_path' in locals() and os.path.exists(file_path):
+            os.remove(file_path)
         return jsonify({
             'success': False,
             'message': f'文档处理失败：{str(e)}'
@@ -644,11 +623,9 @@ def get_document_content(doc_name):
             return '\n'.join(content_lines)
             
         elif file_type == 'xlsx':
-            import pandas as pd
-            df = pd.read_excel(file_path)
-            return df.to_string()
+            return convert_xlsx_to_markdown(file_path)
             
-        elif file_type in ['html', 'htm']:
+        elif file_type == 'html':
             from bs4 import BeautifulSoup
             with open(file_path, 'r', encoding='utf-8') as f:
                 soup = BeautifulSoup(f.read(), 'html.parser')

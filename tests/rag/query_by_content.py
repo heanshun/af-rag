@@ -2,7 +2,7 @@ from rag.trunk.save_mongo import query_document_content
 
 if __name__ == "__main__":
     results = query_document_content(
-        "上班",
+        "李三",
         username="admin",
         password="Class123!",
         host="localhost",
@@ -12,6 +12,7 @@ if __name__ == "__main__":
     )
     for result in results:
         print("\n找到匹配内容：")
+        print(result)
         print(f"内容：{result['content']}")
         print(f"类型：{result['type']}")
         if result['context']['parent']:

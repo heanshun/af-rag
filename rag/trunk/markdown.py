@@ -22,12 +22,15 @@ class DocNode:
         child.parent = self
         self.children.append(child)
 
-def split_document(doc_text: str) -> DocNode:
+def split_document(doc_text: str, filename: str = "root") -> DocNode:
     """
     将文档按层级切分为树状结构
+    Args:
+        doc_text: 文档内容
+        filename: 文件名，默认为"root"
     返回根节点
     """
-    root = DocNode(content="ROOT", level=0)
+    root = DocNode(content=filename, level=0)
     chapters = re.split(r'(?m)^#+\s+', doc_text)
     
     for chapter_text in chapters[1:]:
@@ -50,7 +53,7 @@ def split_document(doc_text: str) -> DocNode:
                     
                     print("检测到表格开始")
                     # 创建表格节点
-                    para_node = DocNode(content="表格", level=2, type="table")
+                    para_node = DocNode(content="", level=2, type="paragraph")
                     chapter_node.add_child(para_node)
                     
                     # 获取表头
@@ -78,7 +81,7 @@ def split_document(doc_text: str) -> DocNode:
                             
                             row_content = ' '.join(processed_cells)
                             if row_content.strip():
-                                row_node = DocNode(content=row_content, level=3, type="table_row")
+                                row_node = DocNode(content=row_content, level=3, type="sentence")
                                 para_node.add_child(row_node)
                         i += 1
                     continue
@@ -120,7 +123,7 @@ if __name__ == "__main__":
 # 第二章
 新的章节开始了。这是一段测试文本。
 """
-    markdown_text = convert_to_markdown("rag/test_docs/AI信息化在华通公司的实施方案v1.1.docx", "docx")
+    markdown_text = convert_to_markdown("rag/test_docs/奥枫软件人员信息.xlsx", "xlsx")
     
-    doc_tree = split_document(markdown_text)
+    doc_tree = split_document(markdown_text[1], markdown_text[0])
     print_document_tree(doc_tree)
