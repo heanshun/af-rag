@@ -9,7 +9,7 @@ import importlib
 import shutil
 from rag.trunk.save_mongo import delete_document_by_name
 from rag.trunk.markdown import split_document
-from rag.trunk.convert_files import convert_to_markdown, convert_xlsx_to_markdown, convert_html_to_markdown
+from rag.trunk.convert_files import convert_to_markdown, convert_xlsx_to_markdown, convert_html_to_markdown, convert_pdf_to_markdown
 from rag.trunk.api.api_json import process_api_json
 import ast
 import json
@@ -541,51 +541,7 @@ def get_document_content(doc_name):
                 return f.read()
                 
         elif file_type == 'pdf':
-            import pdfplumber
-            content = []
-            with pdfplumber.open(file_path) as pdf:
-                for page in pdf.pages:
-                    # 处理表格
-                    tables = page.extract_tables()
-                    for table in tables:
-                        if table:
-                            # 合并跨行的单元格内容
-                            processed_table = []
-                            for row in table:
-                                # 清理每个单元格的内容
-                                cleaned_row = []
-                                for cell in row:
-                                    if cell is None:
-                                        cell = ''
-                                    # 移除多余的换行符和空格
-                                    cell = ' '.join(str(cell).split())
-                                    cleaned_row.append(cell)
-                                
-                                # 如果行不是完全为空，则添加到处理后的表格中
-                                if any(cell.strip() for cell in cleaned_row):
-                                    processed_table.append(cleaned_row)
-                            
-                            # 生成markdown表格
-                            if processed_table:
-                                # 添加表格边框
-                                table_lines = []
-                                for row in processed_table:
-                                    table_lines.append('|' + '|'.join(row) + '|')
-                                
-                                # 添加表格分隔符
-                                if len(table_lines) > 0:
-                                    col_count = len(processed_table[0])
-                                    header_separator = '|' + '|'.join(['---'] * col_count) + '|'
-                                    table_lines.insert(1, header_separator)
-                                    content.extend(table_lines)
-                                    content.append('')  # 添加空行
-                    
-                    # 处理文本内容
-                    text = page.extract_text()
-                    if text:
-                        content.append(text)
-            
-            return '\n'.join(content)
+            return convert_pdf_to_markdown(file_path)
             
         elif file_type == 'docx':
             from docx import Document

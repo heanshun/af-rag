@@ -5,6 +5,7 @@ import pandas as pd
 from PyPDF2 import PdfReader
 import re
 from pdf2docx import Converter
+from rag.trunk.pdf_convert import extract_pdf_text
 
 def convert_docx_to_markdown(filepath):
     doc = docx.Document(filepath)
@@ -60,21 +61,7 @@ def convert_docx_to_markdown(filepath):
     return '\n\n'.join(markdown_lines)
 
 def convert_pdf_to_markdown(pdf_path):
-    pdf_path = Path(pdf_path)
-    docx_path = pdf_path.with_suffix('.converted.docx')
-    
-    # Step 1: Convert PDF to DOCX
-    converter = Converter(str(pdf_path))
-    converter.convert(str(docx_path))
-    converter.close()
-    
-    # Step 2: Convert DOCX to Markdown
-    markdown_text = convert_docx_to_markdown(docx_path)
-    
-    # Step 3: 删除临时生成的 docx 文件
-    docx_path.unlink()  # 使用 Path 对象的 unlink() 方法删除文件
-    
-    return markdown_text
+    return extract_pdf_text(pdf_path)
 
 def convert_txt_to_markdown(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
