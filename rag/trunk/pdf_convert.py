@@ -200,12 +200,6 @@ def extract_pdf_text(pdf_path):
         for page_num, page in enumerate(reader.pages, 1):
             text = page.extract_text()
             text = text.strip()
-            if text and text[0].isdigit():
-                for i, char in enumerate(text):
-                    if not char.isdigit():
-                        text = text[i:].strip()
-                        break
-            
             lines = text.splitlines()
             if len(lines) >= 3 and lines[-3].strip() == "_":
                 lines = lines[:-3]
@@ -270,8 +264,15 @@ def extract_pdf_text(pdf_path):
 
 if __name__ == "__main__":
     input_file = "rag/test_docs/AI信息化在华通公司的实施方案v1.1.pdf"
-    #print("提取PDF文本...")
     text = extract_pdf_text(input_file)
-    print(text)
-    #tables = extract_tables_to_markdown(input_file)
-    #print(tables)
+    
+    # 构建输出文件路径
+    output_file = "rag/test_docs/output.md"
+    
+    # 写入文件
+    try:
+        with open(output_file, "w", encoding="utf-8") as f:
+            f.write(text)
+        print(f"文本已成功写入到 {output_file}")
+    except Exception as e:
+        print(f"写入文件时出错: {str(e)}", file=sys.stderr)
