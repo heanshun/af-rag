@@ -1,5 +1,6 @@
 from PyPDF2 import PdfReader
 import sys
+import pdfplumber
 
 def is_same_paragraph(current_line, next_line):
     """判断两行是否属于同一段落"""
@@ -80,12 +81,121 @@ def is_title(current_line, next_line):
         
     return False
 
+def extract_tables_to_markdown(pdf_path):
+    markdown_tables = []
+
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            tables = page.extract_tables()
+            for table in tables:
+                if not table:
+                    continue
+
+                # 去掉空行
+                table = [row for row in table if row and any(cell and cell.strip() for cell in row)]
+
+                if len(table) < 2:
+                    continue  # 必须要有表头 + 至少一行数据
+
+                header = table[0]
+                rows = table[1:]
+
+                # 输出 header
+                markdown_tables.append("|" + "|".join(cell.strip().replace("\n", "") if cell else "" for cell in header) + "|")
+
+                # Markdown 的分隔符
+                markdown_tables.append("|" + "|".join("---" for _ in header) + "|")
+
+                # 输出数据行
+                for row in rows:
+                    clean_row = [cell.strip().replace("\n", "") if cell else "" for cell in row]
+                    markdown_tables.append("|" + "|".join(clean_row) + "|")
+
+                markdown_tables.append("")  # 分隔多个表格
+
+    return '\n'.join(markdown_tables)
+
+def merge_text_with_tables(text, tables_markdown):
+    """将原文本中的表格部分替换为markdown格式的表格
+    
+    Args:
+        text: 原始提取的文本
+        tables_markdown: 通过extract_tables_to_markdown提取的表格
+    """
+    if not tables_markdown:
+        return text
+        
+    # 将文本按段落分割
+    paragraphs = text.split('\n\n')
+    result_paragraphs = []
+    
+    # 解析表格内容，创建查找表
+    tables = tables_markdown.split('\n\n')
+    for table in tables:
+        if not table.strip():
+            continue
+            
+        # 获取表格的行数据（去掉markdown分隔符）
+        table_rows = [row.strip('|').split('|') for row in table.split('\n') 
+                     if row.strip() and not row.strip('|').startswith('---')]
+        if not table_rows:
+            continue
+            
+        # 创建表格内容的指纹
+        table_content = []
+        for row in table_rows:
+            row = [cell.strip() for cell in row]
+            # 将每行的前两个单元格作为识别依据
+            if len(row) >= 2:
+                table_content.append((row[0].strip(), row[1].strip()))
+        
+        # 在原文中查找和替换表格内容
+        found_start = -1
+        for i, para in enumerate(paragraphs):
+            # 检查段落是否包含表格的第一行
+            if table_content and table_content[0][0] in para and table_content[0][1] in para:
+                found_start = i
+                break
+        
+        if found_start >= 0:
+            # 确定表格在原文中的范围
+            found_end = found_start
+            matched_rows = 1
+            for i in range(found_start + 1, len(paragraphs)):
+                para = paragraphs[i]
+                for name, desc in table_content[matched_rows:]:
+                    if name in para and desc in para:
+                        found_end = i
+                        matched_rows += 1
+                        break
+                if matched_rows >= len(table_content):
+                    break
+            
+            # 替换原文中的表格内容
+            if found_start <= found_end:
+                result_paragraphs.extend(paragraphs[:found_start])
+                result_paragraphs.append(table)
+                paragraphs = paragraphs[found_end + 1:]
+            else:
+                result_paragraphs.append(paragraphs.pop(0))
+        else:
+            result_paragraphs.append(paragraphs.pop(0))
+    
+    # 添加剩余的段落
+    result_paragraphs.extend(paragraphs)
+    
+    return '\n\n'.join(result_paragraphs)
+
 def extract_pdf_text(pdf_path):
     """从PDF文件中提取文本并返回markdown格式的文本"""
     try:
+        # 获取表格
+        tables_markdown = extract_tables_to_markdown(pdf_path)
+        
+        # 原有的文本提取逻辑
         reader = PdfReader(pdf_path)
         current_paragraph = []
-        result_text = []  # 用于存储所有处理后的文本
+        result_text = []
         
         for page_num, page in enumerate(reader.pages, 1):
             text = page.extract_text()
@@ -148,8 +258,11 @@ def extract_pdf_text(pdf_path):
         if current_paragraph:
             result_text.append(" ".join(current_paragraph))
         
-        # 返回所有文本，用双换行符连接
-        return "\n\n".join(result_text)
+        # 合并文本和表格
+        text = "\n\n".join(result_text)
+        if not tables_markdown:
+            return text
+        return merge_text_with_tables(text, tables_markdown)
             
     except Exception as e:
         print(f"提取PDF文本时出错: {str(e)}", file=sys.stderr)
@@ -157,7 +270,8 @@ def extract_pdf_text(pdf_path):
 
 if __name__ == "__main__":
     input_file = "rag/test_docs/AI信息化在华通公司的实施方案v1.1.pdf"
-    print("提取PDF文本...")
+    #print("提取PDF文本...")
     text = extract_pdf_text(input_file)
     print(text)
-    
+    #tables = extract_tables_to_markdown(input_file)
+    #print(tables)

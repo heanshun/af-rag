@@ -196,5 +196,5 @@ def convert_to_markdown(filepath, filetype):
 
 # 示例调用
 if __name__ == "__main__":
-    markdown_text = convert_to_markdown("rag/test_docs/htmltest.html", "html")
-    print(markdown_text)
+    markdown_text = convert_to_markdown("rag/test_docs/AI信息化在华通公司的实施方案v1.1.docx", "docx")
+    print(markdown_text[1])
