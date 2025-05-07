@@ -51,7 +51,7 @@ def search_markdown(
             - parent: 父节点内容
     """
     # 从向量库获取相似内容的向量ID
-    vector_results = get_messages_info(query, "rag_collection", limit=top_k, threshold=threshold, embedding_func=get_embeddings_m3)
+    vector_results = get_messages_info(query, "rag_collection2", limit=top_k, threshold=threshold, embedding_func=get_embeddings_m3)
     if not vector_results:
         return []
         

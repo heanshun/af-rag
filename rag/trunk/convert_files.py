@@ -61,7 +61,10 @@ def convert_docx_to_markdown(filepath):
     return '\n\n'.join(markdown_lines)
 
 def convert_pdf_to_markdown(pdf_path):
-    return extract_pdf_text(pdf_path)
+    markdown_text = extract_pdf_text(pdf_path)
+    if markdown_text and "#" not in markdown_text:
+        markdown_text.insert(0, "# 第一段")
+    return markdown_text
 
 def convert_txt_to_markdown(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -196,5 +199,5 @@ def convert_to_markdown(filepath, filetype):
 
 # 示例调用
 if __name__ == "__main__":
-    markdown_text = convert_to_markdown("rag/test_docs/AI信息化在华通公司的实施方案v1.1.docx", "docx")
+    markdown_text = convert_to_markdown("rag/test_docs/AI信息化在华通公司的实施方案v1.1.pdf", "pdf")
     print(markdown_text[1])

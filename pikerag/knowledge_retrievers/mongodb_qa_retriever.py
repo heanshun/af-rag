@@ -10,10 +10,10 @@ from pikerag.knowledge_retrievers.base_qa_retriever import BaseQaRetriever
 from pikerag.utils.config_loader import load_callable
 from pikerag.utils.logger import Logger
 from pikerag.workflows.common import BaseQaData
-from vectorapi.embeddings import get_embeddings_aliyun
+from vectorapi.embeddings import get_embeddings_aliyun, get_embeddings_bge
 from vectorapi.milvus import search_similar_content
 
-def get_messages_info(message, collection_name, limit=30, threshold=None, embedding_func=get_embeddings_aliyun):
+def get_messages_info(message, collection_name, limit=30, threshold=None, embedding_func=get_embeddings_bge):
     # 获取message的向量表示
     vectors = embedding_func(message)
     results = search_similar_content(collection_name, [vectors], limit)
@@ -119,7 +119,7 @@ class QaMongoDBRetriever(BaseQaRetriever, MongoDBMixin):
         # 初始化检索参数
         self.retrieve_k = retriever_config.get("retrieve_k", 5)
         self.retrieve_score_threshold = retriever_config.get("retrieve_score_threshold", 1)
-        self.embedding_func = eval(retriever_config.get("embedding_func", get_embeddings_aliyun))
+        self.embedding_func = eval(retriever_config.get("embedding_func", get_embeddings_bge))
         
         self._init_query_parser()
         self._init_mongodb_mixin()
@@ -199,7 +199,7 @@ class QaMongoDBRetriever(BaseQaRetriever, MongoDBMixin):
         # 从向量库获取相似内容的向量ID
         vector_results = get_messages_info(
             query, 
-            "rag_collection", 
+            "rag_collection2", 
             limit=retrieve_k,
             threshold=threshold,
             embedding_func=self.embedding_func

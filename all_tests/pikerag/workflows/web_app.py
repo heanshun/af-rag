@@ -452,7 +452,7 @@ def upload_document():
         if existing_doc and force_override:
             delete_document_by_name(
                 doc_name,
-                vector_space="rag_collection",
+                vector_space="rag_collection2",
                 username="admin",
                 password="Class123!",
                 host="localhost",
@@ -464,7 +464,7 @@ def upload_document():
         doc_id = save_doc_tree_to_mongodb(
             root=root,
             doc_name=doc_name,
-            vector_space="rag_collection",
+            vector_space="rag_collection2",
             username="admin",
             password="Class123!",
             host="localhost",
@@ -497,7 +497,7 @@ def delete_document():
         # 删除MongoDB中的文档
         success = delete_document_by_name(
             doc_name,
-            vector_space="rag_collection",
+            vector_space="rag_collection2",
             username="admin",
             password="Class123!",
             host="localhost",

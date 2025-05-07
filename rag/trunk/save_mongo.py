@@ -5,7 +5,7 @@ from rag.trunk.api.api_json import process_api_json
 import pymongo
 from bson import ObjectId
 from work_tool import insert_message_to_collection
-from vectorapi.embeddings import get_embeddings_aliyun
+from vectorapi.embeddings import get_embeddings_aliyun, get_embeddings_bge
 from vectorapi.milvus import delete_data
 import json
 
@@ -15,11 +15,11 @@ def node_to_dict(node: DocNode, doc_id: str, vector_space: str, parent_id: Objec
     """
     # api vector_content 不为空，则表示是api的节点
     if node.vector_content is not None:
-        vector_id = insert_message_to_collection(node.vector_content, vector_space, content = node.content, embedding_func=get_embeddings_aliyun)
+        vector_id = insert_message_to_collection(node.vector_content, vector_space, content = node.content, embedding_func=get_embeddings_bge)
         
     # 获取节点内容的向量ID
     if node.vector_content is None:
-        vector_id = insert_message_to_collection(node.content, vector_space, embedding_func=get_embeddings_aliyun)
+        vector_id = insert_message_to_collection(node.content, vector_space, embedding_func=get_embeddings_bge)
 
     node_dict = {
         "doc_id": doc_id,           # 原始文档ID
@@ -51,7 +51,7 @@ def create_mongo_uri(
 def save_doc_tree_to_mongodb(
     root: DocNode,
     doc_name: str,
-    vector_space: str = "rag_collection",
+    vector_space: str = "rag_collection2",
     host: str = "localhost",
     port: int = 27017,
     username: str = None,
@@ -220,7 +220,7 @@ def get_node_context(db, node: Dict) -> Dict:
 
 def delete_document_by_name(
     doc_name: str,
-    vector_space: str = "rag_collection",
+    vector_space: str = "rag_collection2",
     host: str = "localhost",
     port: int = 27017,
     username: str = None,

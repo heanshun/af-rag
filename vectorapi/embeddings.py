@@ -2,6 +2,7 @@ import json
 import requests
 import os
 from openai import OpenAI
+from sentence_transformers import SentenceTransformer
 
 def get_embeddings_aliyun(message):
     # 创建1024维的零向量作为默认返回值
@@ -41,5 +42,35 @@ def get_embeddings_aliyun(message):
             
     except Exception as e:
         print(f"调用阿里云API时发生错误: {str(e)}")
+
+def get_embeddings_bge(message):
+    """使用 BGE 模型获取文本嵌入向量
+    
+    Args:
+        message: 需要编码的文本字符串
+        
+    Returns:
+        numpy.ndarray: 文本的嵌入向量
+    """
+    # 如果是空字符串，返回零向量
+    if not message.strip():
+        print("空字符串，返回零向量")
+        return [0.0] * 512  # BGE-small-zh 的输出维度是 512
+    
+    try:
+        # 初始化模型
+        model = SentenceTransformer('BAAI/bge-small-zh')
+        
+        # 获取嵌入向量
+        embedding = model.encode(message, normalize_embeddings=True)
+        
+        # 转换为列表并返回
+        return embedding.tolist()
+        
+    except Exception as e:
+        print(f"使用BGE模型生成嵌入向量时发生错误: {str(e)}")
+        # 发生错误时返回零向量
+        return [0.0] * 512
+
 
 
