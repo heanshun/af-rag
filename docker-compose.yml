@@ -82,6 +82,23 @@ services:
       - "etcd"
       - "minio"
 
+  # 您的应用服务
+  #af-rag:
+  #  build: .
+  #  container_name: af-rag
+  #  ports:
+  #    - "5000:5000"
+  #  depends_on:
+  #    - mongodb
+  #    - etcd
+  #    - minio
+  #  environment:
+  #    - MONGO_USERNAME=${MONGO_USERNAME}
+  #    - MONGO_PASSWORD=${MONGO_PASSWORD}
+  #  volumes:
+  #    - ./data:/app/data
+  #    - ./logs:/app/logs
+
 networks:
   default:
     name: milvus

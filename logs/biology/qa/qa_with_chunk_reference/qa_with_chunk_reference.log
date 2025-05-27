@@ -3,90 +3,44 @@ Initialized MongoDB connection with URI: mongodb://admin:Class123!@localhost:270
 [Evaluator ]
 Evaluator initialized with ['ExactMatch'].
 [QaMongoDBRetriever]
-Starting content retrieval for query: 用户: 西安华通新能源股份有限公司的简称是什么
+Starting content retrieval for query: 用户: 奥特的项目是谁签的什么时候签的
 [QaMongoDBRetriever]
-Vector search returned 5 results: [[457857118624554236, 0.32170045375823975, "基于西安华通新能源股份有限公司（以下简称“华通公司”）对于 AI及新质生产力的应用诉求，西安奥枫软件有限公司（以下简称“奥枫软件”）通过在燃气行业中软件开发及应用 AI的经验，双方通过会议座谈交流的方式，充分沟通AI在燃气行业的应用价值，以及 AI对燃气业务有哪些帮助和提升，并取得共识。"], [457857118624554244, 0.3592571020126343, "通过与华通公司的交流。"], [457857118624554088, 0.38710886240005493, "AI信息化在华通公司的实施方案"], [457857118624554086, 0.3884432315826416, "AI信息化在华通公司的实施方案v1.1"], [457857118624554090, 0.43375641107559204, "西安奥枫软件有限公司"]]
-[QaMongoDBRetriever]
-Created new MongoDB client connection
-[QaMongoDBRetriever]
-Processing vector_id: 457857118624554236, distance: 0.32170045375823975, content: 基于西安华通新能源股份有限公司（以下简称“华通公司”）对于 AI及新质生产力的应用诉求，西安奥枫软件有限公司（以下简称“奥枫软件”）通过在燃气行业中软件开发及应用 AI的经验，双方通过会议座谈交流的方式，充分沟通AI在燃气行业的应用价值，以及 AI对燃气业务有哪些帮助和提升，并取得共识。
-[QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 681ad3776f37ba7bc7c377d8, doc_id: 681ad3046f37ba7bc7c377b9
-[QaMongoDBRetriever]
-Retrieved node content for node_id: 681ad3776f37ba7bc7c377d8
-[QaMongoDBRetriever]
-Retrieved document info for doc_id: 681ad3046f37ba7bc7c377b9
-[QaMongoDBRetriever]
-Processing vector_id: 457857118624554244, distance: 0.3592571020126343, content: 通过与华通公司的交流。
-[QaMongoDBRetriever]
-Retrieved 5 siblings for parent_id: 681ad3776f37ba7bc7c377d9, doc_id: 681ad3046f37ba7bc7c377b9
-[QaMongoDBRetriever]
-Retrieved node content for node_id: 681ad3776f37ba7bc7c377d9
-[QaMongoDBRetriever]
-Retrieved document info for doc_id: 681ad3046f37ba7bc7c377b9
-[QaMongoDBRetriever]
-Processing vector_id: 457857118624554088, distance: 0.38710886240005493, content: AI信息化在华通公司的实施方案
-[QaMongoDBRetriever]
-Retrieved document info for doc_id: 681ad3046f37ba7bc7c377b9
-[QaMongoDBRetriever]
-Retrieved 0 siblings for parent_id: 681ad30f6f37ba7bc7c377bb, doc_id: 681ad3046f37ba7bc7c377b9
-[QaMongoDBRetriever]
-Processing vector_id: 457857118624554086, distance: 0.3884432315826416, content: AI信息化在华通公司的实施方案v1.1
-[QaMongoDBRetriever]
-Retrieved document info for doc_id: 681ad3046f37ba7bc7c377b9
-[QaMongoDBRetriever]
-Processing vector_id: 457857118624554090, distance: 0.43375641107559204, content: 西安奥枫软件有限公司
-[QaMongoDBRetriever]
-Skipping duplicate parent_id: 681ad30b6f37ba7bc7c377ba
-[QaMongoDBRetriever]
-Successfully retrieved 4 documents for query
-[QaMongoDBRetriever]
-Closed MongoDB client connection
-[QaMongoDBRetriever]
-Starting content retrieval for query: 用户: 西安华通新能源股份有限公司的简称是什么
-助手: 华通公司
-用户: AI识别用户的功能具体是什么
-[QaMongoDBRetriever]
-Vector search returned 5 results: [[457857118624554366, 0.24157002568244934, "|功能名称|功能描述|\n|---|---|\n|AI识别用户|通过用户呼入电话，识别用户档案信息，并向用户问好。"], [457857118624554136, 0.24638497829437256, "一、AI识别用户"], [457857118624554088, 0.30088257789611816, "AI信息化在华通公司的实施方案"], [457857118624554086, 0.3024149537086487, "AI信息化在华通公司的实施方案v1.1"], [457857118624554236, 0.3024923801422119, "基于西安华通新能源股份有限公司（以下简称“华通公司”）对于 AI及新质生产力的应用诉求，西安奥枫软件有限公司（以下简称“奥枫软件”）通过在燃气行业中软件开发及应用 AI的经验，双方通过会议座谈交流的方式，充分沟通AI在燃气行业的应用价值，以及 AI对燃气业务有哪些帮助和提升，并取得共识。"]]
+Vector search returned 5 results: [[458287909741791410, 0.33404916524887085, "项目信息表.客户联系人。"], [458287909741791548, 0.3518259823322296, "项目联系记录表.操作人。"], [458287909741791550, 0.35326340794563293, "项目联系记录表.操作日期。"], [458287909741791526, 0.35994309186935425, "合同签订过程记录表.操作人。"], [458287909741791408, 0.36781254410743713, "项目信息表.约定时间。"]]
 [QaMongoDBRetriever]
 Created new MongoDB client connection
 [QaMongoDBRetriever]
-Processing vector_id: 457857118624554366, distance: 0.24157002568244934, content: |功能名称|功能描述|
-|---|---|
-|AI识别用户|通过用户呼入电话，识别用户档案信息，并向用户问好。
+Processing vector_id: 458287909741791410, distance: 0.33404916524887085, content: 项目信息表.客户联系人。
 [QaMongoDBRetriever]
-Retrieved 5 siblings for parent_id: 681ad3796f37ba7bc7c377fa, doc_id: 681ad3046f37ba7bc7c377b9
+Retrieved 45 siblings for parent_id: 6833df9de8acff8d87402032, doc_id: 6833df1ee8acff8d8740200c
 [QaMongoDBRetriever]
-Retrieved node content for node_id: 681ad3796f37ba7bc7c377fa
+Retrieved node content for node_id: 6833df9de8acff8d87402032
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 681ad3046f37ba7bc7c377b9
+Retrieved document info for doc_id: 6833df1ee8acff8d8740200c
 [QaMongoDBRetriever]
-Processing vector_id: 457857118624554136, distance: 0.24638497829437256, content: 一、AI识别用户
+Processing vector_id: 458287909741791548, distance: 0.3518259823322296, content: 项目联系记录表.操作人。
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 681ad3046f37ba7bc7c377b9
+Retrieved 12 siblings for parent_id: 6833df9de8acff8d87402036, doc_id: 6833df1ee8acff8d8740200c
 [QaMongoDBRetriever]
-Retrieved 2 siblings for parent_id: 681ad3676f37ba7bc7c377d3, doc_id: 681ad3046f37ba7bc7c377b9
+Retrieved node content for node_id: 6833df9de8acff8d87402036
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 681ad3796f37ba7bc7c377fb, doc_id: 681ad3046f37ba7bc7c377b9
+Retrieved document info for doc_id: 6833df1ee8acff8d8740200c
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 681ad3796f37ba7bc7c377fc, doc_id: 681ad3046f37ba7bc7c377b9
+Processing vector_id: 458287909741791550, distance: 0.35326340794563293, content: 项目联系记录表.操作日期。
 [QaMongoDBRetriever]
-Processing vector_id: 457857118624554088, distance: 0.30088257789611816, content: AI信息化在华通公司的实施方案
+Skipping duplicate parent_id: 6833df9de8acff8d87402036
 [QaMongoDBRetriever]
-Skipping duplicate parent_id: 681ad30b6f37ba7bc7c377ba
+Processing vector_id: 458287909741791526, distance: 0.35994309186935425, content: 合同签订过程记录表.操作人。
 [QaMongoDBRetriever]
-Processing vector_id: 457857118624554086, distance: 0.3024149537086487, content: AI信息化在华通公司的实施方案v1.1
+Retrieved 5 siblings for parent_id: 6833df9de8acff8d87402034, doc_id: 6833df1ee8acff8d8740200c
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 681ad3046f37ba7bc7c377b9
+Retrieved node content for node_id: 6833df9de8acff8d87402034
 [QaMongoDBRetriever]
-Processing vector_id: 457857118624554236, distance: 0.3024923801422119, content: 基于西安华通新能源股份有限公司（以下简称“华通公司”）对于 AI及新质生产力的应用诉求，西安奥枫软件有限公司（以下简称“奥枫软件”）通过在燃气行业中软件开发及应用 AI的经验，双方通过会议座谈交流的方式，充分沟通AI在燃气行业的应用价值，以及 AI对燃气业务有哪些帮助和提升，并取得共识。
+Retrieved document info for doc_id: 6833df1ee8acff8d8740200c
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 681ad3776f37ba7bc7c377d8, doc_id: 681ad3046f37ba7bc7c377b9
+Processing vector_id: 458287909741791408, distance: 0.36781254410743713, content: 项目信息表.约定时间。
 [QaMongoDBRetriever]
-Retrieved node content for node_id: 681ad3776f37ba7bc7c377d8
+Skipping duplicate parent_id: 6833df9de8acff8d87402032
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 681ad3046f37ba7bc7c377b9
-[QaMongoDBRetriever]
-Successfully retrieved 4 documents for query
+Successfully retrieved 3 documents for query
 [QaMongoDBRetriever]
 Closed MongoDB client connection

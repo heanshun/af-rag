@@ -1,0 +1,12 @@
+.git
+.env
+__pycache__
+*.pyc
+venv
+data/
+logs/
+.vscode/
+env_configs/
+rag/test_docs/
+tests/pikerag/workflows/chat_archives/
+tests/pikerag/workflows/retrieved_files/

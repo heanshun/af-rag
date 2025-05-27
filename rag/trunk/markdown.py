@@ -31,6 +31,11 @@ def split_document(doc_text: str, filename: str = "root") -> DocNode:
     返回根节点
     """
     root = DocNode(content=filename, level=0)
+    # 检查文档是否包含章节标记
+    if not re.search(r'(?m)^#+\s+', doc_text):
+        # 如果没有找到章节标记，添加"# 第一章"
+        doc_text = "# 第一章\n" + doc_text
+    
     chapters = re.split(r'(?m)^#+\s+', doc_text)
     
     for chapter_text in chapters[1:]:
@@ -123,7 +128,8 @@ if __name__ == "__main__":
 # 第二章
 新的章节开始了。这是一段测试文本。
 """
-    markdown_text = convert_to_markdown("rag/test_docs/AI信息化在华通公司的实施方案v1.1.pdf", "pdf")
-    
-    doc_tree = split_document(markdown_text[1], markdown_text[0])
+    #markdown_text = convert_to_markdown("rag/test_docs/刑法.md", "md")
+    with open("rag/test_docs/table.md", 'r', encoding='utf-8') as f:
+        markdown_text = f.read()
+    doc_tree = split_document(markdown_text)
     print_document_tree(doc_tree)
