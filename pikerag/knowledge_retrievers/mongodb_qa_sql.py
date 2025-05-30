@@ -100,8 +100,19 @@ class MongoDBMixin:
                 tag=self.name
             )
 
+def _replace_table_name(content: str, table_mapping: dict) -> str:
+    """替换句子中的中文表名为英文表名
+    
+    Args:
+        content: 原始内容
+        table_mapping: 表名映射字典
+    
+    Returns:
+        str: 替换后的内容
+    """
+    return table_mapping.get(content, content)       
 
-class QaMongoDBRetriever(BaseQaRetriever, MongoDBMixin):
+class QaMongoDBRetriever_sql(BaseQaRetriever, MongoDBMixin):
     """基于MongoDB的文档检索器实现"""
     
     name: str = "QaMongoDBRetriever"
@@ -115,6 +126,23 @@ class QaMongoDBRetriever(BaseQaRetriever, MongoDBMixin):
             main_logger: 主日志记录器
         """
         super().__init__(retriever_config, log_dir, main_logger)
+        
+        # 加载表名映射
+        table_mapping_path = retriever_config.get("table_mapping_path", "rag/test_docs/table_name_mapping.json")
+        column_mapping_path = retriever_config.get("field_mapping_path", "rag/test_docs/field_mappings.json")
+        try:
+            with open(table_mapping_path, 'r', encoding='utf-8') as f:
+                self.table_mapping = json.load(f)
+            with open(column_mapping_path, 'r', encoding='utf-8') as f:
+                self.column_mapping = json.load(f)
+            print(self.column_mapping)
+        except Exception as e:
+            self._main_logger.warning(
+                msg=f"Failed to load table mapping from {table_mapping_path} and field mapping from {column_mapping_path}: {str(e)}",
+                tag=self.name
+            )
+            self.table_mapping = {}
+            self.column_mapping = {}
         
         # 初始化检索参数
         self.retrieve_k = retriever_config.get("retrieve_k", 5)
@@ -256,48 +284,26 @@ class QaMongoDBRetriever(BaseQaRetriever, MongoDBMixin):
                     # 获取文档信息
                     doc = self._get_document_info(node["doc_id"])
                     
+                    matched_content = _replace_table_name(node["content"], self.column_mapping)
+                    
                     # 组织内容
                     content = {
-                        "doc_id": node["doc_id"],
-                        "doc_name": doc["name"] if doc else None,
-                        "matched_content": node["content"],
-                        "node_type": node["type"],
-                        "level": node["level"],
-                        "siblings": [sib["content"] for sib in siblings],
-                        "parent": parent["content"] if parent else None
+                        "文档名": doc["name"] if doc else None,
+                        "匹配到的字段描述": node["content"],
+                        "英文表名和字段": matched_content,
+                        "该表下其他字段描述": [sib["content"] for sib in siblings],
+                        "其他字段对应的表明和字段": [_replace_table_name(sib["content"], self.column_mapping) for sib in siblings],
                     }
-                #chapter节点  
-                elif node["type"] == "chapter":
-                    # 获取文档信息
-                    doc = self._get_document_info(node["doc_id"])
-                    
-                    # 获取当前chapter的子节点（paragraphs）
-                    paragraphs = self._get_siblings(node["_id"], node["doc_id"])
-                    # 获取每个paragraph下的所有sentence
-                    all_sentences = []
-                    for para in paragraphs:
-                        sentences = self._get_siblings(para["_id"], node["doc_id"])
-                        all_sentences.extend([sent["content"] for sent in sentences])
-                    if all_sentences:
-                        content = {
-                            "doc_id": node["doc_id"],
-                            "doc_name": doc["name"] if doc else None,
-                            "matched_content": node["content"],
-                            "node_type": node["type"],
-                            "level": node["level"],
-                            "sentences": all_sentences
-                        }
-                # 非sentence和chapter节点
+                # sql处理方式对chapter和paragraphs相同
                 else:
                     # 获取文档信息
                     doc = self._get_document_info(node["doc_id"])
+                    matched_content = _replace_table_name(node["content"], self.table_mapping)
 
                     content = {
-                        "doc_id": node["doc_id"],
-                        "doc_name": doc["name"] if doc else None,
-                        "matched_content": node["content"],
-                        "node_type": node["type"],
-                        "level": node["level"]
+                        "文档名": doc["name"] if doc else None,
+                        "匹配到的表名描述": node["content"],
+                        "英文表名": matched_content,
                     }
                 
                 results.append(str(content))

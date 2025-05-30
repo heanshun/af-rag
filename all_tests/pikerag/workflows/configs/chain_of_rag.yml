@@ -67,7 +67,7 @@ retriever:
       auth_db: "admin"
     retrieve_k: 5
     retrieve_score_threshold: 0.8
-    embedding_func: get_embeddings_bge
+    embedding_func: get_embedding
 
     # Query Setting
     ############################################################################

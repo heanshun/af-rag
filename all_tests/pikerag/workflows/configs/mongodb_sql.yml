@@ -71,8 +71,8 @@ llm_client:
 # Retriever Setting
 ################################################################################
 retriever:
-  module_path: pikerag.knowledge_retrievers
-  class_name: QaMongoDBRetriever
+  module_path: pikerag.knowledge_retrievers.mongodb_qa_sql
+  class_name: QaMongoDBRetriever_sql
   args:
     mongodb_setting:
       host: "localhost"
@@ -81,9 +81,10 @@ retriever:
       password: "Class123!"
       db_name: "documents"
       auth_db: "admin"
+    table_mapping_path: "rag/test_docs/table_name_mapping.json"
     retrieve_k: 5
     retrieve_score_threshold: 0.8
-    embedding_func: get_embeddings_bge
+    embedding_func: get_embedding
 
     # Query Setting
     ############################################################################

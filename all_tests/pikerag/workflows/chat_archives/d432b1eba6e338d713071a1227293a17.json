@@ -1,0 +1,21 @@
+{
+  "title": "今年合同总金额是多少",
+  "timestamp": "2025-05-30 15:01:48",
+  "history": [
+    {
+      "role": "user",
+      "content": "今年合同总金额是多少",
+      "rationale": "",
+      "references": []
+    },
+    {
+      "role": "assistant",
+      "content": "SELECT SUM(f_contractmanoy) AS total_amount FROM t_contractinfo WHERE YEAR(inputdate) = YEAR(CURDATE());",
+      "rationale": "该查询统计今年合同总金额的步骤如下：\n1. 使用SUM聚合函数对合同金额字段f_contractmanoy求和\n2. 通过WHERE子句筛选合同签订日期(inputdate)属于当前年份的记录\n3. YEAR(CURDATE())获取当前年份，YEAR(inputdate)提取合同签订日期的年份\n4. 最终结果字段使用别名total_amount增强可读性",
+      "references": [
+        "无"
+      ]
+    }
+  ],
+  "session_id": "pzdlug"
+}

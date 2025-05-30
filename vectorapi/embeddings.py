@@ -3,6 +3,8 @@ import requests
 import os
 from openai import OpenAI
 from sentence_transformers import SentenceTransformer
+import requests
+import time
 
 def get_embeddings_aliyun(message):
     # 创建1024维的零向量作为默认返回值
@@ -72,5 +74,22 @@ def get_embeddings_bge(message):
         # 发生错误时返回零向量
         return [0.0] * 512
 
+# 初始化全局会话，只建立一次连接，后续复用
+
+def get_embedding(message):
+    if not message.strip():
+        print("空字符串，返回零向量")
+        return [0.0] * 512
+
+    try:
+        url = "http://192.168.50.10:8000/get_embedding"
+        start = time.time()
+        response = requests.post(url, json={"text": message})
+        print(f"HTTP 请求耗时: {time.time() - start:.4f} 秒")
+        return response.json()["embedding"]
+
+    except Exception as e:
+        print(f"使用BGE模型生成嵌入向量时发生错误: {str(e)}")
+        return [0.0] * 512
 
 
