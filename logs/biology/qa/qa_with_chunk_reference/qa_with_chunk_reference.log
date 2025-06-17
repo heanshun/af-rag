@@ -1,0 +1,54 @@
+[QaMongoDBRetriever]
+Initialized MongoDB connection with URI: mongodb://admin:Class123!@localhost:27017/?authSource=admin
+[Evaluator ]
+Evaluator initialized with ['ExactMatch'].
+[QaMongoDBRetriever]
+Starting content retrieval for query: 用户: 北京大学招生网站是什么
+[QaMongoDBRetriever]
+Vector search returned 5 results: [[458786253230005358, 0.3680814802646637, "本科招生网网址："], [458786253230005372, 0.5122662782669067, "中国传媒大学本招（微信号CUC-zsc）"], [458786253230005376, 0.5345045924186707, "中国传媒大学本科招生"], [458786253230005362, 0.5639140605926514, "本科招生咨询电话："], [458786253230005370, 0.576958179473877, "本科招生微信："]]
+[QaMongoDBRetriever]
+Created new MongoDB client connection
+[QaMongoDBRetriever]
+Processing vector_id: 458786253230005358, distance: 0.3680814802646637, content: 本科招生网网址：
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 6850e137ce153dbbd2fdb974, doc_id: 6850e136ce153dbbd2fdb93f
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 6850e137ce153dbbd2fdb974
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 6850e136ce153dbbd2fdb93f
+[QaMongoDBRetriever]
+Processing vector_id: 458786253230005372, distance: 0.5122662782669067, content: 中国传媒大学本招（微信号CUC-zsc）
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 6850e137ce153dbbd2fdb97b, doc_id: 6850e136ce153dbbd2fdb93f
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 6850e137ce153dbbd2fdb97b
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 6850e136ce153dbbd2fdb93f
+[QaMongoDBRetriever]
+Processing vector_id: 458786253230005376, distance: 0.5345045924186707, content: 中国传媒大学本科招生
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 6850e137ce153dbbd2fdb97d, doc_id: 6850e136ce153dbbd2fdb93f
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 6850e137ce153dbbd2fdb97d
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 6850e136ce153dbbd2fdb93f
+[QaMongoDBRetriever]
+Processing vector_id: 458786253230005362, distance: 0.5639140605926514, content: 本科招生咨询电话：
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 6850e137ce153dbbd2fdb976, doc_id: 6850e136ce153dbbd2fdb93f
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 6850e137ce153dbbd2fdb976
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 6850e136ce153dbbd2fdb93f
+[QaMongoDBRetriever]
+Processing vector_id: 458786253230005370, distance: 0.576958179473877, content: 本科招生微信：
+[QaMongoDBRetriever]
+Retrieved 1 siblings for parent_id: 6850e137ce153dbbd2fdb97a, doc_id: 6850e136ce153dbbd2fdb93f
+[QaMongoDBRetriever]
+Retrieved node content for node_id: 6850e137ce153dbbd2fdb97a
+[QaMongoDBRetriever]
+Retrieved document info for doc_id: 6850e136ce153dbbd2fdb93f
+[QaMongoDBRetriever]
+Successfully retrieved 5 documents for query
+[QaMongoDBRetriever]
+Closed MongoDB client connection

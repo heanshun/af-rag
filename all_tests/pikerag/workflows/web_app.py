@@ -9,7 +9,7 @@ import importlib
 import shutil
 from rag.trunk.save_mongo import delete_document_by_name
 from rag.trunk.markdown import split_document
-from rag.trunk.convert_files import convert_to_markdown, convert_xlsx_to_markdown, convert_html_to_markdown, convert_pdf_to_markdown
+from rag.trunk.convert_files import convert_to_markdown, convert_xlsx_to_markdown, convert_html_to_markdown, convert_pdf_to_markdown, convert_csv_to_markdown
 from rag.trunk.api.api_json import process_api_json
 import ast
 import json
@@ -435,7 +435,7 @@ def upload_document():
             content = file_content.decode('utf-8')
             root = process_api_json(content)
         else:
-            supported_formats = ['pdf', 'docx', 'txt', 'xlsx', 'html', 'htm', 'md']
+            supported_formats = ['pdf', 'docx', 'txt', 'xlsx', 'html', 'htm', 'md', 'csv']
             if file_extension not in supported_formats:
                 os.remove(file_path)  # 清理不支持的文件
                 return jsonify({'success': False, 'message': f'不支持的文件格式：{file_extension}'})
@@ -580,6 +580,9 @@ def get_document_content(doc_name):
             
         elif file_type == 'xlsx':
             return convert_xlsx_to_markdown(file_path)
+
+        elif file_type == 'csv':
+            return convert_csv_to_markdown(file_path)
             
         elif file_type == 'html':
             return convert_html_to_markdown(file_path)

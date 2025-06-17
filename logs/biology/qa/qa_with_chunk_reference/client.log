@@ -675,3 +675,23 @@ API调用失败: cannot access local variable 'reasoning_content' where it is no
 2025-05-30 14:58:27.606121 create completion...
 [ExternalLLMClient]
 2025-05-30 14:58:42.672294 receive response, time spent: 15.06617283821106 s.
+[ExternalLLMClient]
+2025-05-30 15:01:28.824990 create completion...
+[ExternalLLMClient]
+2025-05-30 15:01:48.761670 receive response, time spent: 19.936679363250732 s.
+[ExternalLLMClient]
+2025-06-17 11:27:45.298309 create completion...
+[ExternalLLMClient]
+2025-06-17 11:28:04.167024 receive response, time spent: 18.867988109588623 s.
+[ExternalLLMClient]
+2025-06-17 11:30:44.038280 create completion...
+[ExternalLLMClient]
+2025-06-17 11:30:58.914146 receive response, time spent: 14.874825716018677 s.
+[ExternalLLMClient]
+2025-06-17 11:44:50.258449 create completion...
+[ExternalLLMClient]
+2025-06-17 11:45:01.498318 receive response, time spent: 11.239426374435425 s.
+[ExternalLLMClient]
+2025-06-17 11:45:50.148966 create completion...
+[ExternalLLMClient]
+2025-06-17 11:46:02.350220 receive response, time spent: 12.20125436782837 s.

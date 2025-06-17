@@ -177,6 +177,36 @@ def convert_xlsx_to_markdown(filepath):
 
     return '\n\n'.join(markdown_lines)
 
+def convert_csv_to_markdown(filepath):
+    """
+    将CSV文件转换为Markdown格式
+    """
+    # 读取CSV文件
+    df = pd.read_csv(filepath, encoding='utf-8')
+    markdown_lines = []
+    
+    # 使用文件名作为标题
+    filename = Path(filepath).stem
+    markdown_lines.append(f"# {filename}")
+    
+    # 处理表格数据
+    if not df.empty:
+        # 获取表头
+        headers = df.columns.tolist()
+        # 创建表格行
+        table = ['|' + '|'.join(str(col) for col in headers) + '|']
+        # 添加分隔行
+        table.append('|' + '|'.join(['---'] * len(headers)) + '|')
+        # 添加数据行
+        for _, row in df.iterrows():
+            # 处理空值，转换为空字符串
+            row_data = [str(cell) if pd.notna(cell) else '' for cell in row]
+            table.append('|' + '|'.join(row_data) + '|')
+        # 将表格添加到markdown_lines
+        markdown_lines.extend(table)
+    
+    return '\n\n'.join(markdown_lines)
+
 def convert_to_markdown(filepath, filetype):
     # 获取不带扩展名的文件名
     filename = Path(filepath).stem
@@ -192,6 +222,8 @@ def convert_to_markdown(filepath, filetype):
         content = convert_html_to_markdown(filepath)
     elif filetype == 'xlsx':
         content = convert_xlsx_to_markdown(filepath)
+    elif filetype == 'csv':
+        content = convert_csv_to_markdown(filepath)
     else:
         raise ValueError(f"Unsupported file type: {filetype}")
     

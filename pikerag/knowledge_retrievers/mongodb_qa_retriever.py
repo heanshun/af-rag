@@ -33,6 +33,9 @@ def get_messages_info(message, collection_name, limit=30, threshold=None, embedd
             # 获取其他字段的值
             field1_value = hit.entity.get('content')
             result.append((entity_id, distance, field1_value))
+        
+        if len(result) == 0:
+            print(f"retrive没有结果需要做别的处理")
 
     return result
 
