@@ -1,0 +1,23 @@
+{
+  "title": "兰州大学在哪",
+  "timestamp": "2025-06-19 15:03:46",
+  "history": [
+    {
+      "role": "user",
+      "content": "兰州大学在哪",
+      "rationale": "",
+      "references": []
+    },
+    {
+      "role": "assistant",
+      "content": "兰州大学位于中国甘肃省兰州市",
+      "rationale": "提供的上下文文档均显示'无法提取网页内容'，无法从中获取具体位置信息。因此，基于常识知识，兰州大学作为中国的一所重点大学，其主校区位于甘肃省兰州市，这是广为人知的事实。",
+      "references": [
+        "https://oldwww.lzu.edu.cn/",
+        "https://oldwww.lzu.edu.cn/static/fwld/",
+        "https://www.lzu.edu.cn/zjld/xydt.htm"
+      ]
+    }
+  ],
+  "session_id": "d2qk28"
+}

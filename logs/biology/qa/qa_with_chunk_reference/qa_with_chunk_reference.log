@@ -3,48 +3,30 @@ Initialized MongoDB connection with URI: mongodb://admin:Class123!@localhost:270
 [Evaluator ]
 Evaluator initialized with ['ExactMatch'].
 [QaMongoDBRetriever]
-Starting content retrieval for query: 用户: labubu是什么
+Starting content retrieval for query: 用户: 兰州大学在哪
 [QaMongoDBRetriever]
-Vector search returned 5 results: [[458786253230006266, 0.42466628551483154, "cuczsb@cuc.edu.cn"], [458786253230006254, 0.43630802631378174, "http://www.cuc.edu.cn"], [458786253230005958, 0.45223116874694824, "root"], [458786253230006258, 0.4565586447715759, "http://zhaosheng.cuc.edu.cn"], [458786253230006280, 0.457513689994812, "招生监督邮箱：jiwei@cuc.edu.cn"]]
+Vector search returned 3 results: [[-1, 0.0, "标题：兰州大学- 自强不息,独树一帜!\n链接：https://oldwww.lzu.edu.cn/\n内容：无法提取网页内容"], [-2, 0.0, "标题：访问兰大_兰州大学\n链接：https://oldwww.lzu.edu.cn/static/fwld/\n内容：无法提取网页内容"], [-3, 0.0, "标题：校园地图-兰州大学- 自强不息,独树一帜!\n链接：https://www.lzu.edu.cn/zjld/xydt.htm\n内容：无法提取网页内容"]]
 [QaMongoDBRetriever]
 Created new MongoDB client connection
 [QaMongoDBRetriever]
-Processing vector_id: 458786253230006266, distance: 0.42466628551483154, content: cuczsb@cuc.edu.cn
+Processing vector_id: -1, distance: 0.0, content: 标题：兰州大学- 自强不息,独树一帜!
+链接：https://oldwww.lzu.edu.cn/
+内容：无法提取网页内容
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6853abefc71a697b4d5d10d8, doc_id: 6853abecc71a697b4d5d109e
+Processing internet search result with ID: -1
 [QaMongoDBRetriever]
-Retrieved node content for node_id: 6853abefc71a697b4d5d10d8
+Processing vector_id: -2, distance: 0.0, content: 标题：访问兰大_兰州大学
+链接：https://oldwww.lzu.edu.cn/static/fwld/
+内容：无法提取网页内容
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 6853abecc71a697b4d5d109e
+Processing internet search result with ID: -2
 [QaMongoDBRetriever]
-Processing vector_id: 458786253230006254, distance: 0.43630802631378174, content: http://www.cuc.edu.cn
+Processing vector_id: -3, distance: 0.0, content: 标题：校园地图-兰州大学- 自强不息,独树一帜!
+链接：https://www.lzu.edu.cn/zjld/xydt.htm
+内容：无法提取网页内容
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6853abeec71a697b4d5d10d2, doc_id: 6853abecc71a697b4d5d109e
+Processing internet search result with ID: -3
 [QaMongoDBRetriever]
-Retrieved node content for node_id: 6853abeec71a697b4d5d10d2
-[QaMongoDBRetriever]
-Retrieved document info for doc_id: 6853abecc71a697b4d5d109e
-[QaMongoDBRetriever]
-Processing vector_id: 458786253230005958, distance: 0.45223116874694824, content: root
-[QaMongoDBRetriever]
-Retrieved document info for doc_id: 6853abecc71a697b4d5d109e
-[QaMongoDBRetriever]
-Processing vector_id: 458786253230006258, distance: 0.4565586447715759, content: http://zhaosheng.cuc.edu.cn
-[QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6853abeec71a697b4d5d10d4, doc_id: 6853abecc71a697b4d5d109e
-[QaMongoDBRetriever]
-Retrieved node content for node_id: 6853abeec71a697b4d5d10d4
-[QaMongoDBRetriever]
-Retrieved document info for doc_id: 6853abecc71a697b4d5d109e
-[QaMongoDBRetriever]
-Processing vector_id: 458786253230006280, distance: 0.457513689994812, content: 招生监督邮箱：jiwei@cuc.edu.cn
-[QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6853abefc71a697b4d5d10df, doc_id: 6853abecc71a697b4d5d109e
-[QaMongoDBRetriever]
-Retrieved node content for node_id: 6853abefc71a697b4d5d10df
-[QaMongoDBRetriever]
-Retrieved document info for doc_id: 6853abecc71a697b4d5d109e
-[QaMongoDBRetriever]
-Successfully retrieved 5 documents for query
+Successfully retrieved 3 documents for query
 [QaMongoDBRetriever]
 Closed MongoDB client connection

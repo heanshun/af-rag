@@ -45,4 +45,8 @@ pandas
 openpyxl 
 tabulate
 beautifulsoup4
+requests>=2.25.1
+selenium>=4.15.0
+lxml>=4.6.3
+urllib3>=1.26.5
 

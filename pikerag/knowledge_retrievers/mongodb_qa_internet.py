@@ -27,8 +27,12 @@ def get_messages_info(message, collection_name, limit=30, threshold=None, embedd
             entity_id = hit.id
             distance = hit.distance
 
-            # 如果设置了阈值，则只返回距离小于阈值的结果
-            if threshold is not None and distance >= threshold:
+            # 将距离转换为相似度（假设使用cosine距离）
+            similarity = 1 - distance
+            
+            # 如果设置了阈值，则只返回相似度大于阈值的结果
+            if threshold is not None and similarity < threshold:
+                print(f"🔍 过滤低相似度结果: {similarity:.3f} < {threshold}")
                 continue
 
             # 获取其他字段的值
