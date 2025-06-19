@@ -695,3 +695,73 @@ API调用失败: cannot access local variable 'reasoning_content' where it is no
 2025-06-17 11:45:50.148966 create completion...
 [ExternalLLMClient]
 2025-06-17 11:46:02.350220 receive response, time spent: 12.20125436782837 s.
+[ExternalLLMClient]
+2025-06-17 13:19:15.105969 create completion...
+[ExternalLLMClient]
+2025-06-17 13:19:30.164272 receive response, time spent: 15.02011775970459 s.
+[ExternalLLMClient]
+2025-06-17 13:30:02.785130 create completion...
+[ExternalLLMClient]
+2025-06-17 13:30:19.416821 receive response, time spent: 16.631691455841064 s.
+[ExternalLLMClient]
+2025-06-17 13:31:29.040928 create completion...
+[ExternalLLMClient]
+2025-06-17 13:31:41.126567 receive response, time spent: 12.085639476776123 s.
+[ExternalLLMClient]
+2025-06-19 11:07:01.558789 create completion...
+[ExternalLLMClient]
+2025-06-19 11:07:40.175162 receive response, time spent: 38.615809202194214 s.
+[ExternalLLMClient]
+2025-06-19 11:18:38.796602 create completion...
+[ExternalLLMClient]
+2025-06-19 11:19:21.548729 receive response, time spent: 42.7521276473999 s.
+[ExternalLLMClient]
+2025-06-19 11:22:10.684199 create completion...
+[ExternalLLMClient]
+2025-06-19 11:22:37.299949 receive response, time spent: 26.6152241230011 s.
+[ExternalLLMClient]
+2025-06-19 11:24:01.981881 create completion...
+[ExternalLLMClient]
+2025-06-19 11:24:29.826846 receive response, time spent: 27.844964742660522 s.
+[ExternalLLMClient]
+2025-06-19 11:28:40.109711 create completion...
+[ExternalLLMClient]
+2025-06-19 11:29:07.819704 receive response, time spent: 27.70999312400818 s.
+[ExternalLLMClient]
+2025-06-19 11:30:51.961596 create completion...
+[ExternalLLMClient]
+2025-06-19 11:31:27.919404 receive response, time spent: 35.95780849456787 s.
+[ExternalLLMClient]
+2025-06-19 13:55:33.014820 create completion...
+[ExternalLLMClient]
+2025-06-19 13:56:05.914904 receive response, time spent: 32.88097882270813 s.
+[ExternalLLMClient]
+2025-06-19 14:05:17.620649 create completion...
+[ExternalLLMClient]
+2025-06-19 14:06:02.811791 receive response, time spent: 45.19114136695862 s.
+[ExternalLLMClient]
+2025-06-19 14:15:46.038430 create completion...
+[ExternalLLMClient]
+2025-06-19 14:16:03.871262 receive response, time spent: 17.832011938095093 s.
+[ExternalLLMClient]
+2025-06-19 14:17:52.752888 create completion...
+[ExternalLLMClient]
+2025-06-19 14:18:39.941021 receive response, time spent: 47.186784505844116 s.
+[ExternalLLMClient]
+2025-06-19 14:20:13.632148 create completion...
+[ExternalLLMClient]
+2025-06-19 14:20:36.254751 receive response, time spent: 22.622603178024292 s.
+[ExternalLLMClient]
+2025-06-19 14:24:16.873366 create completion...
+[ExternalLLMClient]
+2025-06-19 14:24:35.977235 receive response, time spent: 19.10386848449707 s.
+[ExternalLLMClient]
+2025-06-19 14:25:29.961235 create completion...
+[ExternalLLMClient]
+2025-06-19 14:25:51.493060 receive response, time spent: 21.531293630599976 s.
+[ExternalLLMClient]
+2025-06-19 14:28:02.525019 create completion...
+[ExternalLLMClient]
+2025-06-19 14:29:41.832528 create completion...
+[ExternalLLMClient]
+2025-06-19 14:30:23.724214 receive response, time spent: 41.89114689826965 s.

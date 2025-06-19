@@ -3,51 +3,47 @@ Initialized MongoDB connection with URI: mongodb://admin:Class123!@localhost:270
 [Evaluator ]
 Evaluator initialized with ['ExactMatch'].
 [QaMongoDBRetriever]
-Starting content retrieval for query: 用户: 北京大学招生网站是什么
+Starting content retrieval for query: 用户: labubu是什么
 [QaMongoDBRetriever]
-Vector search returned 5 results: [[458786253230005358, 0.3680814802646637, "本科招生网网址："], [458786253230005372, 0.5122662782669067, "中国传媒大学本招（微信号CUC-zsc）"], [458786253230005376, 0.5345045924186707, "中国传媒大学本科招生"], [458786253230005362, 0.5639140605926514, "本科招生咨询电话："], [458786253230005370, 0.576958179473877, "本科招生微信："]]
+Vector search returned 5 results: [[458786253230006266, 0.42466628551483154, "cuczsb@cuc.edu.cn"], [458786253230006254, 0.43630802631378174, "http://www.cuc.edu.cn"], [458786253230005958, 0.45223116874694824, "root"], [458786253230006258, 0.4565586447715759, "http://zhaosheng.cuc.edu.cn"], [458786253230006280, 0.457513689994812, "招生监督邮箱：jiwei@cuc.edu.cn"]]
 [QaMongoDBRetriever]
 Created new MongoDB client connection
 [QaMongoDBRetriever]
-Processing vector_id: 458786253230005358, distance: 0.3680814802646637, content: 本科招生网网址：
+Processing vector_id: 458786253230006266, distance: 0.42466628551483154, content: cuczsb@cuc.edu.cn
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6850e137ce153dbbd2fdb974, doc_id: 6850e136ce153dbbd2fdb93f
+Retrieved 1 siblings for parent_id: 6853abefc71a697b4d5d10d8, doc_id: 6853abecc71a697b4d5d109e
 [QaMongoDBRetriever]
-Retrieved node content for node_id: 6850e137ce153dbbd2fdb974
+Retrieved node content for node_id: 6853abefc71a697b4d5d10d8
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 6850e136ce153dbbd2fdb93f
+Retrieved document info for doc_id: 6853abecc71a697b4d5d109e
 [QaMongoDBRetriever]
-Processing vector_id: 458786253230005372, distance: 0.5122662782669067, content: 中国传媒大学本招（微信号CUC-zsc）
+Processing vector_id: 458786253230006254, distance: 0.43630802631378174, content: http://www.cuc.edu.cn
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6850e137ce153dbbd2fdb97b, doc_id: 6850e136ce153dbbd2fdb93f
+Retrieved 1 siblings for parent_id: 6853abeec71a697b4d5d10d2, doc_id: 6853abecc71a697b4d5d109e
 [QaMongoDBRetriever]
-Retrieved node content for node_id: 6850e137ce153dbbd2fdb97b
+Retrieved node content for node_id: 6853abeec71a697b4d5d10d2
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 6850e136ce153dbbd2fdb93f
+Retrieved document info for doc_id: 6853abecc71a697b4d5d109e
 [QaMongoDBRetriever]
-Processing vector_id: 458786253230005376, distance: 0.5345045924186707, content: 中国传媒大学本科招生
+Processing vector_id: 458786253230005958, distance: 0.45223116874694824, content: root
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6850e137ce153dbbd2fdb97d, doc_id: 6850e136ce153dbbd2fdb93f
+Retrieved document info for doc_id: 6853abecc71a697b4d5d109e
 [QaMongoDBRetriever]
-Retrieved node content for node_id: 6850e137ce153dbbd2fdb97d
+Processing vector_id: 458786253230006258, distance: 0.4565586447715759, content: http://zhaosheng.cuc.edu.cn
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 6850e136ce153dbbd2fdb93f
+Retrieved 1 siblings for parent_id: 6853abeec71a697b4d5d10d4, doc_id: 6853abecc71a697b4d5d109e
 [QaMongoDBRetriever]
-Processing vector_id: 458786253230005362, distance: 0.5639140605926514, content: 本科招生咨询电话：
+Retrieved node content for node_id: 6853abeec71a697b4d5d10d4
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6850e137ce153dbbd2fdb976, doc_id: 6850e136ce153dbbd2fdb93f
+Retrieved document info for doc_id: 6853abecc71a697b4d5d109e
 [QaMongoDBRetriever]
-Retrieved node content for node_id: 6850e137ce153dbbd2fdb976
+Processing vector_id: 458786253230006280, distance: 0.457513689994812, content: 招生监督邮箱：jiwei@cuc.edu.cn
 [QaMongoDBRetriever]
-Retrieved document info for doc_id: 6850e136ce153dbbd2fdb93f
+Retrieved 1 siblings for parent_id: 6853abefc71a697b4d5d10df, doc_id: 6853abecc71a697b4d5d109e
 [QaMongoDBRetriever]
-Processing vector_id: 458786253230005370, distance: 0.576958179473877, content: 本科招生微信：
+Retrieved node content for node_id: 6853abefc71a697b4d5d10df
 [QaMongoDBRetriever]
-Retrieved 1 siblings for parent_id: 6850e137ce153dbbd2fdb97a, doc_id: 6850e136ce153dbbd2fdb93f
-[QaMongoDBRetriever]
-Retrieved node content for node_id: 6850e137ce153dbbd2fdb97a
-[QaMongoDBRetriever]
-Retrieved document info for doc_id: 6850e136ce153dbbd2fdb93f
+Retrieved document info for doc_id: 6853abecc71a697b4d5d109e
 [QaMongoDBRetriever]
 Successfully retrieved 5 documents for query
 [QaMongoDBRetriever]

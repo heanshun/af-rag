@@ -1,0 +1,21 @@
+{
+  "title": "中国传媒大学英文名称为",
+  "timestamp": "2025-06-19 14:20:36",
+  "history": [
+    {
+      "role": "user",
+      "content": "中国传媒大学英文名称为",
+      "rationale": "",
+      "references": []
+    },
+    {
+      "role": "assistant",
+      "content": "Communication University of China",
+      "rationale": "根据提供的上下文，特别是第一条匹配内容（'第二条 学校全称为中国传媒大学，英文名称为Communication University of China，英文缩写为CUC，...'），其中明确指定了中国传媒大学的英文名称为'Communication University of China'。该上下文来源于中国传媒大学招生简章的官方文档，因此该信息是权威和可靠的。其他上下文片段未提及英文名称，故以此为准。",
+      "references": [
+        "中国传媒大学招生简章.md"
+      ]
+    }
+  ],
+  "session_id": "xbddwd"
+}

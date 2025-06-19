@@ -1,0 +1,115 @@
+# Environment Variable Setting
+################################################################################
+dotenv_path: env_config/simple_env.conf
+
+
+# Logging Setting
+################################################################################
+log_root_dir: logs/biology/qa
+
+# experiment_name: would be used to create log_dir = log_root_dir/experiment_name/
+experiment_name: qa_with_chunk_reference
+
+# test_jsonl_filename: would be used to create test_jsonl_path = log_dir/test_jsonl_filename;
+#   if set to null, the experiment_name would be used
+test_jsonl_filename: null
+
+# Number of rounds you want to test. min, max, avg. accuracy will be reported if multiple rounds.
+test_rounds: 3
+
+
+# Workflow Setting
+################################################################################
+workflow:
+  module_path: pikerag.workflows.qa
+  class_name: SimpleQaWorkflow
+
+
+# Testing Suite Setting
+################################################################################
+test_loading:
+  module: examples.biology.utils
+  name: load_sample_questions
+  args:
+    path: cais/mmlu
+    name: college_biology
+
+
+# Prompt Setting
+################################################################################
+qa_protocol:
+  module_path: pikerag.prompts.qa
+  # available attr_name: multiple_choice_qa_protocol, multiple_choice_qa_with_reference_protocol
+  # attr_name: multiple_choice_qa_with_reference_protocol
+  # attr_name: generation_qa_protocol
+  attr_name: generation_qa_with_reference_protocol
+  # template_partial:
+  #  knowledge_domain: biological
+
+
+# LLM Setting
+################################################################################
+llm_client:
+  module_path: pikerag.llm_client
+  # available class_name: AzureMetaLlamaClient, AzureOpenAIClient, HFMetaLlamaClient
+  # class_name: CompanyLLMClient
+  class_name: ExternalLLMClient
+  args: {}
+
+  llm_config:
+    api_key: "sk-062f03efe4df47298433b72464c190ce"  # 请替换为您的API Key
+    api_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    model: "deepseek-r1"  # 可选模型：deepseek-r1, qwen-turbo等
+
+  cache_config:
+    # location_prefix: will be joined with log_dir to generate the full path;
+    #   if set to null, the experiment_name would be used
+    location_prefix: null
+    auto_dump: True
+
+
+# Retriever Setting
+################################################################################
+retriever:
+  module_path: pikerag.knowledge_retrievers
+  class_name: QaMongoDBInternetRetriever
+  args:
+    mongodb_setting:
+      host: "localhost"
+      port: 27017
+      username: "admin"
+      password: "Class123!"
+      db_name: "documents"
+      auth_db: "admin"
+    retrieve_k: 5
+    retrieve_score_threshold: 0.8
+    embedding_func: get_embedding
+
+    # Query Setting
+    ############################################################################
+    retrieval_query:
+      module_path: pikerag.knowledge_retrievers.query_parsers
+      func_name: question_as_query
+
+    vector_store:
+      collection_name: biology_book
+
+      id_document_loading:
+        module_path: examples.biology.utils
+        func_name: load_ids_and_chunks
+        args:
+          chunk_file_dir: data/biology/chunks
+
+      embedding_setting:
+        module_path: examples.biology.embeddings
+        class_name: CustomAPIEmbeddings
+        args:
+          api_url: "http://your-embedding-service-url/embed"
+          api_key: "your-api-key"  # 如果需要的话
+
+
+# Evaluator Setting
+################################################################################
+evaluator:
+  metrics:
+    - ExactMatch

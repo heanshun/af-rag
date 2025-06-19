@@ -1,0 +1,21 @@
+{
+  "title": "labubu是什么",
+  "timestamp": "2025-06-19 14:30:23",
+  "history": [
+    {
+      "role": "user",
+      "content": "labubu是什么",
+      "rationale": "",
+      "references": []
+    },
+    {
+      "role": "assistant",
+      "content": "parsing error",
+      "rationale": "parsing error",
+      "references": [
+        "中国传媒大学招生简章.md"
+      ]
+    }
+  ],
+  "session_id": "6rrc0h"
+}
