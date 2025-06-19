@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import urllib.parse
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 
 def resolve_baidu_url(baidu_link):
     """将百度跳转链接还原为真实链接"""
@@ -95,13 +98,32 @@ def baidu_search(query, max_results=5):
 
     return results
 
+def baidu_search_selenium(query, max_results=5):
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+
+    driver.get(f"https://www.baidu.com/s?wd={query}")
+    results = []
+
+    elements = driver.find_elements(By.CSS_SELECTOR, "h3.t > a")[:max_results]
+    for el in elements:
+        title = el.text
+        href = el.get_attribute("href")
+        results.append({"title": title, "url": href})
+
+    driver.quit()
+    return results
+
+
 # ✅ 调用搜索 + 提取正文
 if __name__ == "__main__":
 
-    query = "兰州大学在哪"
+    query = "labubu是什么"
     results = baidu_search(query, max_results=3)
     if not results: 
         print("防爬机制出现")
+        results = baidu_search_selenium(query, max_results=3)
         
     for item in results:
         print(f"📌 标题: {item['title']}")
@@ -111,6 +133,7 @@ if __name__ == "__main__":
         print(f"🌐 真实链接: {real_url}")
 
         content = extract_web_content(real_url)
+        """
         if "百度安全验证" in content:
             try:
                 print("使用跳转链接，尝试提取内容")
@@ -118,6 +141,7 @@ if __name__ == "__main__":
             except Exception as e:
                 print(f"跳转链接失败: {e}")
                 continue
+        """
 
         if content:
             print("📄 正文内容（前300字）:")
