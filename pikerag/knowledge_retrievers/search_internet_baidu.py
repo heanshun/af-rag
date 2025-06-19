@@ -81,7 +81,7 @@ def baidu_search(query, max_results=5):
     response = requests.get(url, headers=headers)
     if response.status_code != 200:
         print(f"请求失败: {response.status_code}")
-        return []
+        return []   
 
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -98,9 +98,11 @@ def baidu_search(query, max_results=5):
 # ✅ 调用搜索 + 提取正文
 if __name__ == "__main__":
 
-    query = "兰州大学2025年招生简章"
+    query = "兰州大学在哪"
     results = baidu_search(query, max_results=3)
-
+    if not results: 
+        print("防爬机制出现")
+        
     for item in results:
         print(f"📌 标题: {item['title']}")
         print(f"🔗 跳转链接: {item['url']}")
@@ -109,6 +111,14 @@ if __name__ == "__main__":
         print(f"🌐 真实链接: {real_url}")
 
         content = extract_web_content(real_url)
+        if "百度安全验证" in content:
+            try:
+                print("使用跳转链接，尝试提取内容")
+                content = extract_web_content(item['url'])
+            except Exception as e:
+                print(f"跳转链接失败: {e}")
+                continue
+
         if content:
             print("📄 正文内容（前300字）:")
             print(content[:300])
